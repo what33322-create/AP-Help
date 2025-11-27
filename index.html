@@ -858,20 +858,38 @@
     <div id="notes-view" class="notes-content">
         <!-- Rendered notes will appear here -->
     </div>
-    <div id="notes-edit" class="hidden">
-        <textarea id="notes-textarea" class="form-textarea" style="min-height: 400px;"></textarea>
-        <div class="mt-4">
-            <button class="btn btn-primary" onclick="saveNotesEdit()">
-                <i class="fas fa-save"></i>
-                Save Changes
-            </button>
-            <button class="btn btn-outline" onclick="cancelNotesEdit()">
-                Cancel
-            </button>
-        </div>
+   <div id="notes-edit" class="hidden">
+    <div style="background: white; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.5rem 0.5rem 0 0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="btn btn-outline" onclick="insertMarkdown('# ', '')" title="Heading 1">
+            <i class="fas fa-heading"></i> H1
+        </button>
+        <button class="btn btn-outline" onclick="insertMarkdown('## ', '')" title="Heading 2">
+            <i class="fas fa-heading"></i> H2
+        </button>
+        <button class="btn btn-outline" onclick="insertMarkdown('### ', '')" title="Heading 3">
+            <i class="fas fa-heading"></i> H3
+        </button>
+        <button class="btn btn-outline" onclick="insertMarkdown('**', '**')" title="Bold">
+            <i class="fas fa-bold"></i>
+        </button>
+        <button class="btn btn-outline" onclick="insertMarkdown('- ', '')" title="Bullet Point">
+            <i class="fas fa-list-ul"></i>
+        </button>
+        <button class="btn btn-outline" onclick="insertDropdown()" title="Add Dropdown">
+            <i class="fas fa-caret-square-down"></i> Dropdown
+        </button>
+    </div>
+    <textarea id="notes-textarea" class="form-textarea" style="min-height: 400px; border-radius: 0 0 0.5rem 0.5rem;"></textarea>
+    <div class="mt-4">
+        <button class="btn btn-primary" onclick="saveNotesEdit()">
+            <i class="fas fa-save"></i>
+            Save Changes
+        </button>
+        <button class="btn btn-outline" onclick="cancelNotesEdit()">
+            Cancel
+        </button>
     </div>
 </div>
-
                 <!-- Links Section -->
                 <div class="section">
                     <h2 class="section-title">
@@ -1858,24 +1876,25 @@ function cancelNotesEdit() {
 }
 
         function resetUserRating() {
-            window.userRating = 0;
-            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-            stars.forEach((star, index) => {
-                star.classList.remove('active');
-            });
-        }
+    window.userRating = 0;
+    const stars = document.querySelectorAll('#user-rating-stars .rating-star');
+    stars.forEach((star) => {
+        star.classList.remove('active');
+    });
+}
 
-        function setUserRating(rating) {
-            window.userRating = rating;
-            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
+function setUserRating(rating) {
+    window.userRating = rating;
+    const stars = document.querySelectorAll('#user-rating-stars .rating-star');
+    stars.forEach((star) => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
         }
+    });
+}
 
         function submitRating() {
             if (!window.currentUser || !window.currentNote || window.userRating === 0) {
