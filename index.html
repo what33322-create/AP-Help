@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>AP Exam Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,12 +21,7 @@
             --shadow-lg: 0 20px 25px -5px rgba(0,0,0,.25);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--light);
@@ -34,702 +29,131 @@
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+        .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
 
         /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            height: 72px;
-            background: rgba(248, 250, 252, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0,0,0,.06);
-            z-index: 100;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-            padding: 0 1rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
+        .header { position: sticky; top: 0; height:72px; background: rgba(248,250,252,0.95); backdrop-filter: blur(10px); border-bottom:1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,.06); z-index:100; }
+        .header-content { display:flex; justify-content:space-between; align-items:center; height:100%; padding:0 1rem; }
+        .logo { display:flex; align-items:center; gap:.5rem; cursor:pointer; font-size:1.25rem; font-weight:bold; color:var(--primary); }
+        .nav-buttons { display:flex; gap:1rem; align-items:center; }
 
         .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            outline: none;
+            padding:.5rem 1rem; border:none; border-radius:.5rem; cursor:pointer; font-size:.875rem; font-weight:500; transition:all .2s; text-decoration:none;
+            display:inline-flex; align-items:center; gap:.5rem; outline:none;
         }
-
-        .btn:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: var(--error);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
+        .btn:focus { outline:2px solid var(--primary); outline-offset:2px; }
+        .btn-primary { background-color:var(--primary); color:white; }
+        .btn-primary:hover { background-color:var(--primary-dark); }
+        .btn-outline { background:transparent; color:var(--primary); border:1px solid var(--primary); }
+        .btn-outline:hover { background:var(--primary); color:white; }
+        .btn-danger { background:var(--error); color:white; }
+        .btn-danger:hover { background:#dc2626; }
 
         /* Notification Bar */
-        .notification-bar {
-            position: fixed;
-            top: 72px;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification-bar.show {
-            transform: translateY(0);
-        }
-
-        .notification-content {
-            background: white;
-            margin: 0 auto;
-            max-width: 1200px;
-            padding: 1rem;
-            border-radius: 0 0 0.5rem 0.5rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .notification-success {
-            border-left: 4px solid var(--success);
-        }
-
-        .notification-error {
-            border-left: 4px solid var(--error);
-        }
-
-        .notification-info {
-            border-left: 4px solid var(--accent);
-        }
+        .notification-bar { position:fixed; top:72px; left:0; right:0; z-index:99; transform:translateY(-100%); transition: transform .3s ease; }
+        .notification-bar.show { transform:translateY(0); }
+        .notification-content { background:white; margin:0 auto; max-width:1200px; padding:1rem; border-radius:0 0 .5rem .5rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:.5rem; }
+        .notification-success { border-left:4px solid var(--success); }
+        .notification-error { border-left:4px solid var(--error); }
+        .notification-info { border-left:4px solid var(--accent); }
 
         /* Pages */
-        .page {
-            display: none;
-            min-height: calc(100vh - 72px);
-            padding: 2rem 0;
-        }
+        .page { display:none; min-height:calc(100vh - 72px); padding:2rem 0; }
+        .page.active { display:block; }
 
-        .page.active {
-            display: block;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 4rem 1rem;
-            margin-bottom: 2rem;
-            border-radius: 1rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            opacity: 0.9;
-        }
+        /* Hero */
+        .hero { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; text-align:center; padding:4rem 1rem; margin-bottom:2rem; border-radius:1rem; }
+        .hero h1 { font-size:3.5rem; font-weight:bold; margin-bottom:1rem; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
+        .hero p { font-size:1.25rem; opacity:0.9; }
 
         /* Course Grid */
-        .course-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+        .course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; margin-bottom:2rem; }
+        .course-card { background:white; border-radius:.5rem; padding:1.5rem; box-shadow:var(--shadow); transition:all .3s ease; cursor:pointer; position:relative; border-top:4px solid var(--primary); }
+        .course-card:hover { transform: translateY(-8px); box-shadow:var(--shadow-lg); }
+        .course-emoji { font-size:3rem; margin-bottom:1rem; }
+        .course-title { font-size:1.25rem; font-weight:bold; margin-bottom:.5rem; color:var(--dark); }
+        .course-description { color:var(--gray); margin-bottom:1rem; }
 
-        .course-card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            border-top: 4px solid var(--primary);
-        }
-
-        .course-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .course-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .course-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .course-description {
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .delete-course {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--error);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 2rem;
-            height: 2rem;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .developer-mode .delete-course {
-            display: flex;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
+        .delete-course { position:absolute; top:1rem; right:1rem; background:var(--error); color:white; border:none; border-radius:50%; width:2rem; height:2rem; cursor:pointer; display:none; align-items:center; justify-content:center; }
+        .edit-course { position:absolute; top:1rem; right:4rem; background:var(--secondary); color:white; border:none; border-radius:50%; width:2rem; height:2rem; cursor:pointer; display:none; align-items:center; justify-content:center; }
+        .developer-mode .delete-course, .developer-mode .edit-course { display:flex; }
 
         /* Developer Controls */
-        .dev-controls {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-
-        .developer-mode .dev-controls {
-            display: block;
-        }
+        .dev-controls { background:white; border-radius:.5rem; padding:2rem; margin-bottom:2rem; box-shadow:var(--shadow); display:none; }
+        .developer-mode .dev-controls { display:block; }
 
         /* Course Detail */
-        .course-detail {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 2rem;
-        }
-
-        .section {
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
+        .course-detail { background:white; border-radius:.5rem; padding:2rem; box-shadow:var(--shadow-lg); margin-bottom:2rem; }
+        .section { margin-bottom:2rem; }
+        .section-title { font-size:1.25rem; font-weight:bold; margin-bottom:1rem; color:var(--dark); }
 
         /* Dropdown Notes */
-        .dropdown-section {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .dropdown-header {
-            background: white;
-            padding: 1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            transition: background-color 0.2s ease;
-        }
-
-        .dropdown-header:hover {
-            background: #f8fafc;
-        }
-
-        .dropdown-content {
-            padding: 1rem;
-            display: none;
-        }
-
-        .dropdown-content.active {
-            display: block;
-        }
-
-        .dropdown-icon {
-            transition: transform 0.2s ease;
-        }
-
-        .dropdown-icon.rotated {
-            transform: rotate(180deg);
-        }
+        .dropdown-section { background:#f8fafc; border:1px solid var(--border); border-radius:.5rem; margin-bottom:1rem; overflow:hidden; }
+        .dropdown-header { background:white; padding:1rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
+        .dropdown-content { padding:1rem; display:none; }
+        .dropdown-content.active { display:block; }
 
         /* Notes Section */
-        .notes-content {
-            background: #f8fafc;
-            border-radius: 0.5rem;
+        .notes-content { background:#f8fafc; border-radius:.5rem; padding:1rem; border:1px solid var(--border); }
+        .notes-editor { display:none; }
+        .notes-editor.active { display:block; }
+        .notes-viewer.active { display:block; }
+        .notes-viewer { display:block; } /* default viewer visible */
+
+        /* Editor Toolbar */
+        .editor-toolbar { display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem; flex-wrap:wrap; }
+        .editor-toolbar .btn { padding:.4rem .6rem; font-size:.85rem; }
+        .editor-toolbar select { padding:.4rem .6rem; border-radius:.25rem; border:1px solid var(--border); }
+
+        .course-notes-editor {
+            min-height: 220px;
             padding: 1rem;
-            border: 1px solid var(--border);
-        }
-
-        .notes-editor {
-            display: none;
-        }
-
-        .notes-editor.active {
-            display: block;
-        }
-
-        .notes-viewer.active {
-            display: block;
-        }
-
-        .notes-viewer {
-            display: none;
-        }
-
-        /* Links Section */
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .link-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            border-left: 4px solid var(--accent);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .link-title {
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .delete-link {
-            background: var(--error);
-            color: white;
-            border: none;
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            cursor: pointer;
-            font-size: 0.75rem;
-        }
-
-        /* AI Chat */
-        .chat-container {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .chat-input-container {
-            border-top: 1px solid var(--border);
-            padding: 1rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            border-radius: 0.25rem;
-        }
-
-        .message {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            max-width: 80%;
-        }
-
-        .message.user {
-            background: var(--primary);
-            color: white;
-            margin-left: auto;
-            text-align: right;
-        }
-
-        .message.bot {
-            background: white;
-            border: 1px solid var(--border);
-            margin-right: auto;
-        }
-
-        .chat-locked {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--gray);
-            text-align: center;
-        }
-
-        /* Community */
-        .upload-card, .note-card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
-        }
-
-        .note-meta {
-            color: var(--gray);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+            border-radius: .5rem;
+            border:1px solid var(--border);
+            background:white;
+            overflow:auto;
         }
 
         /* Rating System */
-        .rating-container {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
+        .rating-container { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
+        .rating-stars { display:flex; gap:.25rem; }
+        .rating-star { cursor:pointer; font-size:1.25rem; color:#d1d5db; transition: color .12s ease; user-select:none; }
+        .rating-star.active { color:#fbbf24; }
+        .rating-star.hover { color:#f59e0b; }
+        .rating-display { display:flex; align-items:center; gap:.25rem; font-size:.875rem; color:var(--gray); }
 
-        .rating-stars {
-            display: flex;
-            gap: 0.25rem;
-        }
+        /* Links */
+        .links-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; margin-bottom:1rem; }
+        .link-card { background:white; border:1px solid var(--border); border-radius:.5rem; padding:1rem; border-left:4px solid var(--accent); display:flex; justify-content:space-between; align-items:center; }
+        .link-title { font-weight:500; color:var(--dark); }
+        .delete-link { background:var(--error); color:white; border:none; border-radius:.25rem; padding:.25rem .5rem; cursor:pointer; font-size:.75rem; }
 
-        .rating-star {
-            cursor: pointer;
-            font-size: 1.25rem;
-            color: #d1d5db;
-            transition: color 0.2s ease;
-        }
-
-        .rating-star.active {
-            color: #fbbf24;
-        }
-
-        .rating-star:hover {
-            color: #f59e0b;
-        }
-
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.875rem;
-            color: var(--gray);
-        }
-
-        /* Filters */
-        .filter-container {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .filter-label {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        /* Developer Dashboard */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.875rem;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th, .table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .table th {
-            background: #f8fafc;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .table-row {
-            border-left: 3px solid transparent;
-        }
-
-        .table-row:hover {
-            background: #f8fafc;
-            border-left-color: var(--success);
-        }
-
-        /* Auth Page */
-        .auth-container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .auth-toggle {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--primary);
-            cursor: pointer;
-            text-decoration: underline;
-        }
+        /* Markdown */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 { margin-bottom:.5rem; color:var(--dark); }
+        .markdown-content p { margin-bottom:1rem; }
+        .markdown-content strong { font-weight:bold; }
+        .markdown-content details { margin-bottom:1rem; border:1px solid var(--border); border-radius:.25rem; }
+        .markdown-content summary { padding:.5rem; background:#f8fafc; cursor:pointer; font-weight:500; }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                height: auto;
-                padding: 1rem;
-            }
-
-            .header {
-                height: auto;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .course-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .container {
-                padding: 0 0.5rem;
-            }
-
-            .filter-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        @media (max-width:768px) {
+            .header-content { flex-direction:column; gap:1rem; height:auto; padding:1rem; }
+            .header { height:auto; }
+            .hero h1 { font-size:2.5rem; }
+            .course-grid { grid-template-columns:1fr; }
+            .nav-buttons { flex-wrap:wrap; justify-content:center; }
+            .container { padding:0 .5rem; }
+            .filter-row { flex-direction:column; align-items:stretch; }
         }
 
-        /* Utility Classes */
-        .hidden {
-            display: none !important;
-        }
+        /* Utilities */
+        .hidden { display:none !important; }
+        .text-center { text-align:center; }
+        .mb-2 { margin-bottom:.5rem; }
+        .mb-4 { margin-bottom:1rem; }
+        .mt-4 { margin-top:1rem; }
+        .w-full { width:100%; }
 
-        .text-center {
-            text-align: center;
-        }
-
-        .mb-2 {
-            margin-bottom: 0.5rem;
-        }
-
-        .mb-4 {
-            margin-bottom: 1rem;
-        }
-
-        .mt-4 {
-            margin-top: 1rem;
-        }
-
-        .w-full {
-            width: 100%;
-        }
-
-        /* Markdown Styles */
-        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .markdown-content p {
-            margin-bottom: 1rem;
-        }
-
-        .markdown-content strong {
-            font-weight: bold;
-        }
-
-        .markdown-content details {
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 0.25rem;
-        }
-
-        .markdown-content summary {
-            padding: 0.5rem;
-            background: #f8fafc;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .markdown-content details[open] > *:not(summary) {
-            padding: 0.5rem;
-        }
     </style>
 </head>
 <body>
@@ -768,7 +192,7 @@
     <!-- Home Page -->
     <div id="home-page" class="page active">
         <div class="container">
-            <!-- Hero Section -->
+            <!-- Hero -->
             <div class="hero">
                 <h1>Master Your AP Exams</h1>
                 <p>Comprehensive study resources, community notes, and AI-powered assistance</p>
@@ -777,21 +201,12 @@
             <!-- Developer Controls -->
             <div class="dev-controls">
                 <h3 class="mb-4">Developer Controls</h3>
-                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                    <button class="btn btn-primary" onclick="toggleAddCourseForm()">
-                        <i class="fas fa-plus"></i>
-                        Add New Course
-                    </button>
-                    <button class="btn btn-outline" onclick="showPage('dev')">
-                        <i class="fas fa-cog"></i>
-                        Dev Dashboard
-                    </button>
-                    <button class="btn btn-danger" onclick="exitDeveloperMode()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Exit Dev Mode
-                    </button>
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <button class="btn btn-primary" onclick="toggleAddCourseForm()"><i class="fas fa-plus"></i> Add New Course</button>
+                    <button class="btn btn-outline" onclick="showPage('dev')"><i class="fas fa-cog"></i> Dev Dashboard</button>
+                    <button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Dev Mode</button>
                 </div>
-                
+
                 <div id="add-course-form" class="hidden">
                     <div class="form-group">
                         <label class="form-label">Course Title</label>
@@ -806,29 +221,18 @@
                         <input type="text" id="new-course-description" class="form-input" placeholder="Brief course description">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Notes (Markdown)</label>
-                        <textarea id="new-course-notes" class="form-textarea" placeholder="# Course Overview
-
-## Key Topics
-- Topic 1
-- Topic 2"></textarea>
+                        <label class="form-label">Notes (Markdown or HTML)</label>
+                        <textarea id="new-course-notes" class="form-textarea" placeholder="# Course Overview"></textarea>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" onclick="saveNewCourse()">
-                            <i class="fas fa-save"></i>
-                            Save Course
-                        </button>
-                        <button class="btn btn-outline" onclick="toggleAddCourseForm()">
-                            Cancel
-                        </button>
+                        <button class="btn btn-primary" onclick="saveNewCourse()"><i class="fas fa-save"></i> Save Course</button>
+                        <button class="btn btn-outline" onclick="toggleAddCourseForm()">Cancel</button>
                     </div>
                 </div>
             </div>
 
             <!-- Course Grid -->
-            <div id="course-grid" class="course-grid">
-                <!-- Courses will be populated by JavaScript -->
-            </div>
+            <div id="course-grid" class="course-grid"></div>
         </div>
     </div>
 
@@ -836,82 +240,64 @@
     <div id="course-detail-page" class="page">
         <div class="container">
             <div class="course-detail">
-                <button class="btn btn-outline mb-4" onclick="showPage('home')">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Courses
-                </button>
+                <button class="btn btn-outline mb-4" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back to Courses</button>
 
                 <h1 id="course-detail-title" class="mb-4"></h1>
 
-                <!-- Notes Section with Dropdowns -->
+                <!-- Notes Section -->
                 <div class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-book"></i>
-                        Course Notes
-                    </h2>
-                    <div id="notes-dropdowns">
-                        <!-- Dropdown sections will be populated by JavaScript -->
+                    <h2 class="section-title"><i class="fas fa-book"></i> Course Notes</h2>
+
+                    <div id="notes-dropdowns" class="notes-content markdown-content"></div>
+
+                    <!-- Editor area (developer mode only) -->
+                    <div id="course-notes-editor-wrapper" class="notes-editor">
+                        <div class="editor-toolbar">
+                            <button class="btn btn-outline" onclick="formatSelection('bold')"><i class="fas fa-bold"></i> Bold</button>
+                            <button class="btn btn-outline" onclick="insertBlock('h1')">H1</button>
+                            <button class="btn btn-outline" onclick="insertBlock('h2')">H2</button>
+                            <select id="font-size-select" onchange="setFontSize(this.value)">
+                                <option value="">Font size</option>
+                                <option value="14px">Small</option>
+                                <option value="18px">Normal</option>
+                                <option value="22px">Large</option>
+                            </select>
+                            <button class="btn btn-outline" onclick="insertDropdownSection()"><i class="fas fa-caret-square-down"></i> Insert Dropdown</button>
+                            <button class="btn btn-primary" onclick="saveCourseNotes()"><i class="fas fa-save"></i> Save Notes</button>
+                            <button class="btn btn-outline" onclick="toggleCourseEditor(false)">Cancel</button>
+                        </div>
+                        <div id="course-notes-editor" class="course-notes-editor" contenteditable="true" spellcheck="false"></div>
                     </div>
-                    <button class="btn btn-outline mt-4" onclick="addNewDropdownSection()">
-                        <i class="fas fa-plus"></i>
-                        Add New Section
-                    </button>
+
+                    <div style="margin-top:1rem;">
+                        <button id="edit-notes-button" class="btn btn-outline" onclick="toggleCourseEditor(true)"><i class="fas fa-edit"></i> Edit Notes</button>
+                        <button class="btn btn-outline" onclick="addNewDropdownSection()"><i class="fas fa-plus"></i> Add New Section</button>
+                    </div>
                 </div>
 
                 <!-- Links Section -->
                 <div class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-link"></i>
-                        Useful Links
-                    </h2>
-                    <div id="links-grid" class="links-grid">
-                        <!-- Links will be populated by JavaScript -->
-                    </div>
-                    <button class="btn btn-primary" onclick="toggleAddLinkForm()">
-                        <i class="fas fa-plus"></i>
-                        Add Link
-                    </button>
+                    <h2 class="section-title"><i class="fas fa-link"></i> Useful Links</h2>
+                    <div id="links-grid" class="links-grid"></div>
+                    <button class="btn btn-primary" onclick="toggleAddLinkForm()"><i class="fas fa-plus"></i> Add Link</button>
                     <div id="add-link-form" class="hidden mt-4">
+                        <div class="form-group"><label class="form-label">Link Title</label><input type="text" id="new-link-title" class="form-input"></div>
+                        <div class="form-group"><label class="form-label">URL</label><input type="url" id="new-link-url" class="form-input"></div>
                         <div class="form-group">
-                            <label class="form-label">Link Title</label>
-                            <input type="text" id="new-link-title" class="form-input" placeholder="e.g., Official AP Website">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">URL</label>
-                            <input type="url" id="new-link-url" class="form-input" placeholder="https://apstudents.collegeboard.org/">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" onclick="saveNewLink()">
-                                <i class="fas fa-save"></i>
-                                Save Link
-                            </button>
-                            <button class="btn btn-outline" onclick="toggleAddLinkForm()">
-                                Cancel
-                            </button>
+                            <button class="btn btn-primary" onclick="saveNewLink()"><i class="fas fa-save"></i> Save Link</button>
+                            <button class="btn btn-outline" onclick="toggleAddLinkForm()">Cancel</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- AI Chat Section -->
                 <div class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-robot"></i>
-                        AI Study Assistant
-                    </h2>
-                    <div id="ai-integration-instructions" class="mb-4" style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid var(--accent);">
+                    <h2 class="section-title"><i class="fas fa-robot"></i> AI Study Assistant</h2>
+                    <div id="ai-integration-instructions" class="mb-4" style="background:#f8fafc;padding:1rem;border-radius:.5rem;border-left:4px solid var(--accent);">
                         <h4><i class="fas fa-info-circle"></i> AI Integration Instructions</h4>
-                        <p>To connect a real AI chatbot, modify the <code>sendChatMessage()</code> function in the JavaScript section:</p>
-                        <ol style="margin-left: 1rem; margin-top: 0.5rem;">
-                            <li>Get a free API key from services like OpenAI, Hugging Face, or RapidAPI</li>
-                            <li>Replace the simulated response with actual API calls</li>
-                            <li>Use fetch() to send user messages to your chosen AI service</li>
-                            <li>Display the AI responses in the chat interface</li>
-                        </ol>
-                        <p style="margin-top: 0.5rem;"><strong>Example services:</strong> OpenAI GPT-3.5, Hugging Face Inference API, or RapidAPI's chatbot APIs</p>
+                        <p>To connect a real AI chatbot, modify the <code>sendChatMessage()</code> function in the JavaScript section.</p>
                     </div>
-                    <div id="chat-container" class="chat-container">
-                        <!-- Chat content will be populated by JavaScript -->
-                    </div>
+                    <div id="chat-container" class="chat-container"></div>
                 </div>
             </div>
         </div>
@@ -920,127 +306,51 @@
     <!-- Community Page -->
     <div id="community-page" class="page">
         <div class="container">
-            <h1 class="mb-4">
-                <i class="fas fa-users"></i>
-                Community Notes
-            </h1>
+            <h1 class="mb-4"><i class="fas fa-users"></i> Community Notes</h1>
 
-            <!-- Upload Section -->
             <div class="upload-card">
                 <h2 class="mb-4">Share Your Notes</h2>
-                <div class="form-group">
-                    <label class="form-label">Course</label>
-                    <select id="upload-course-select" class="form-select">
-                        <option value="">Select a course</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Note Title</label>
-                    <input type="text" id="upload-note-title" class="form-input" placeholder="e.g., Calculus Derivatives Summary">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Note Content (Markdown with Dropdowns)</label>
-                    <textarea id="upload-note-content" class="form-textarea" placeholder="# Unit 1: Limits
-
-## Section 1.1: Introduction to Limits
-<details>
-<summary>Click to expand</summary>
-
-Your detailed notes here...
-
-</details>
-
-## Section 1.2: Limit Laws
-<details>
-<summary>Click to expand</summary>
-
-More detailed content...
-
-</details>"></textarea>
-                </div>
-                <button class="btn btn-primary" onclick="uploadNote()">
-                    <i class="fas fa-upload"></i>
-                    Share Note
-                </button>
-                <div id="upload-guest-message" class="hidden mt-2" style="color: var(--gray);">
-                    <i class="fas fa-lock"></i>
-                    Please sign in to share notes
-                </div>
+                <div class="form-group"><label class="form-label">Course</label><select id="upload-course-select" class="form-select"><option value="">Select a course</option></select></div>
+                <div class="form-group"><label class="form-label">Note Title</label><input type="text" id="upload-note-title" class="form-input"></div>
+                <div class="form-group"><label class="form-label">Note Content (Markdown or HTML)</label><textarea id="upload-note-content" class="form-textarea"></textarea></div>
+                <button class="btn btn-primary" onclick="uploadNote()"><i class="fas fa-upload"></i> Share Note</button>
+                <div id="upload-guest-message" class="hidden mt-2" style="color:var(--gray);"><i class="fas fa-lock"></i> Please sign in to share notes</div>
             </div>
 
-            <!-- Filters -->
             <div class="filter-container">
                 <h3 class="mb-4">Filter Notes</h3>
                 <div class="filter-row">
-                    <div class="filter-group">
-                        <label class="filter-label">Course</label>
-                        <select id="filter-course" class="form-select" onchange="applyFilters()">
-                            <option value="">All Courses</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Minimum Rating</label>
-                        <select id="filter-rating" class="form-select" onchange="applyFilters()">
-                            <option value="">Any Rating</option>
-                            <option value="5">5 Stars</option>
-                            <option value="4">4+ Stars</option>
-                            <option value="3">3+ Stars</option>
-                            <option value="2">2+ Stars</option>
-                            <option value="1">1+ Stars</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Sort By</label>
-                        <select id="filter-sort" class="form-select" onchange="applyFilters()">
-                            <option value="rating">Rating (High to Low)</option>
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                        </select>
-                    </div>
+                    <div class="filter-group"><label class="filter-label">Course</label><select id="filter-course" class="form-select" onchange="applyFilters()"><option value="">All Courses</option></select></div>
+                    <div class="filter-group"><label class="filter-label">Minimum Rating</label><select id="filter-rating" class="form-select" onchange="applyFilters()"><option value="">Any Rating</option><option value="5">5 Stars</option><option value="4">4+ Stars</option><option value="3">3+ Stars</option><option value="2">2+ Stars</option><option value="1">1+ Stars</option></select></div>
+                    <div class="filter-group"><label class="filter-label">Sort By</label><select id="filter-sort" class="form-select" onchange="applyFilters()"><option value="rating">Rating (High to Low)</option><option value="newest">Newest First</option><option value="oldest">Oldest First</option></select></div>
                 </div>
             </div>
 
-            <!-- Community Notes List -->
-            <div id="community-notes-list">
-                <!-- Notes will be populated by JavaScript -->
-            </div>
+            <div id="community-notes-list"></div>
         </div>
     </div>
 
-    <!-- View Note Page -->
+    <!-- Note View Page -->
     <div id="note-view-page" class="page">
         <div class="container">
-            <button class="btn btn-outline mb-4" onclick="showPage('community')">
-                <i class="fas fa-arrow-left"></i>
-                Back to Community
-            </button>
-            
+            <button class="btn btn-outline mb-4" onclick="showPage('community')"><i class="fas fa-arrow-left"></i> Back to Community</button>
             <div class="note-card">
                 <h1 id="view-note-title"></h1>
                 <div id="view-note-meta" class="note-meta"></div>
-                
+
                 <!-- Rating Display -->
                 <div id="view-note-rating" class="rating-display mb-4">
                     <div class="rating-stars" id="view-rating-stars"></div>
                     <span id="view-rating-text"></span>
                 </div>
-                
+
                 <!-- User Rating -->
                 <div id="user-rating-section" class="rating-container mb-4 hidden">
                     <label class="form-label">Rate these notes:</label>
-                    <div class="rating-stars" id="user-rating-stars">
-                        <i class="fas fa-star rating-star" data-rating="1" onclick="setUserRating(1)"></i>
-                        <i class="fas fa-star rating-star" data-rating="2" onclick="setUserRating(2)"></i>
-                        <i class="fas fa-star rating-star" data-rating="3" onclick="setUserRating(3)"></i>
-                        <i class="fas fa-star rating-star" data-rating="4" onclick="setUserRating(4)"></i>
-                        <i class="fas fa-star rating-star" data-rating="5" onclick="setUserRating(5)"></i>
-                    </div>
-                    <button class="btn btn-primary" onclick="submitRating()">
-                        <i class="fas fa-check"></i>
-                        Submit Rating
-                    </button>
+                    <div class="rating-stars" id="user-rating-stars"></div>
+                    <button class="btn btn-primary" onclick="submitRating()"><i class="fas fa-check"></i> Submit Rating</button>
                 </div>
-                
+
                 <div id="view-note-content" class="markdown-content"></div>
             </div>
         </div>
@@ -1049,89 +359,35 @@ More detailed content...
     <!-- Developer Dashboard -->
     <div id="dev-page" class="page">
         <div class="container">
-            <h1 class="mb-4">
-                <i class="fas fa-code"></i>
-                Developer Dashboard
-            </h1>
+            <h1 class="mb-4"><i class="fas fa-code"></i> Developer Dashboard</h1>
 
-            <!-- Password Protection -->
             <div id="dev-password-section" class="auth-container mb-4">
                 <h2 class="mb-4">Developer Access</h2>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="dev-password" class="form-input" placeholder="Enter developer password">
-                </div>
-                <button class="btn btn-primary" onclick="enableDeveloperMode()">
-                    <i class="fas fa-unlock"></i>
-                    Enable Developer Mode
-                </button>
+                <div class="form-group"><label class="form-label">Password</label><input type="password" id="dev-password" class="form-input" placeholder="Enter developer password"></div>
+                <button class="btn btn-primary" onclick="enableDeveloperMode()"><i class="fas fa-unlock"></i> Enable Developer Mode</button>
             </div>
 
-            <!-- Developer Content -->
             <div id="dev-content" class="hidden">
-                <!-- Exit Dev Mode Button -->
-                <div class="mb-4">
-                    <button class="btn btn-danger" onclick="exitDeveloperMode()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Exit Developer Mode
-                    </button>
-                </div>
+                <div class="mb-4"><button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Developer Mode</button></div>
 
-                <!-- Stats Grid -->
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div id="total-users" class="stat-number">0</div>
-                        <div class="stat-label">Total Users</div>
-                    </div>
-                    <div class="stat-card">
-                        <div id="guest-users" class="stat-number">0</div>
-                        <div class="stat-label">Guest Users</div>
-                    </div>
-                    <div class="stat-card">
-                        <div id="total-notes" class="stat-number">0</div>
-                        <div class="stat-label">Community Notes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div id="avg-session" class="stat-number">0m</div>
-                        <div class="stat-label">Avg Session Time</div>
-                    </div>
+                    <div class="stat-card"><div id="total-users" class="stat-number">0</div><div class="stat-label">Total Users</div></div>
+                    <div class="stat-card"><div id="guest-users" class="stat-number">0</div><div class="stat-label">Guest Users</div></div>
+                    <div class="stat-card"><div id="total-notes" class="stat-number">0</div><div class="stat-label">Community Notes</div></div>
+                    <div class="stat-card"><div id="avg-session" class="stat-number">0m</div><div class="stat-label">Avg Session Time</div></div>
                 </div>
 
-                <!-- Users Table -->
                 <div class="mb-4">
                     <h2 class="mb-4">Registered Users</h2>
                     <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Registration Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-table-body">
-                                <!-- Users will be populated by JavaScript -->
-                            </tbody>
-                        </table>
+                        <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Registration Date</th></tr></thead><tbody id="users-table-body"></tbody></table>
                     </div>
                 </div>
 
-                <!-- Activity Log -->
                 <div>
                     <h2 class="mb-4">Recent Activity</h2>
                     <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Event</th>
-                                    <th>User</th>
-                                    <th>Timestamp</th>
-                                </tr>
-                            </thead>
-                            <tbody id="activity-table-body">
-                                <!-- Activity will be populated by JavaScript -->
-                            </tbody>
-                        </table>
+                        <table class="table"><thead><tr><th>Event</th><th>User</th><th>Timestamp</th></tr></thead><tbody id="activity-table-body"></tbody></table>
                     </div>
                 </div>
             </div>
@@ -1143,51 +399,25 @@ More detailed content...
         <div class="container">
             <div class="auth-container">
                 <h1 id="auth-title" class="mb-4">Sign In</h1>
-                
                 <form id="auth-form" onsubmit="handleAuth(event)">
-                    <div id="name-field" class="form-group hidden">
-                        <label class="form-label">Name</label>
-                        <input type="text" id="auth-name" class="form-input" placeholder="Your name">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" id="auth-email" class="form-input" placeholder="your@email.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-full">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span id="auth-submit-text">Sign In</span>
-                    </button>
+                    <div id="name-field" class="form-group hidden"><label class="form-label">Name</label><input type="text" id="auth-name" class="form-input" placeholder="Your name"></div>
+                    <div class="form-group"><label class="form-label">Email</label><input type="email" id="auth-email" class="form-input" required></div>
+                    <div class="form-group"><label class="form-label">Password</label><input type="password" id="auth-password" class="form-input" required></div>
+                    <button type="submit" class="btn btn-primary w-full"><i class="fas fa-sign-in-alt"></i> <span id="auth-submit-text">Sign In</span></button>
                 </form>
-                
-                <div class="auth-toggle" onclick="toggleAuthMode()">
-                    <span id="auth-toggle-text">Don't have an account? Sign Up</span>
-                </div>
+                <div class="auth-toggle" onclick="toggleAuthMode()"><span id="auth-toggle-text">Don't have an account? Sign Up</span></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Global State Management
+        // Global State
         window.appData = {
             courses: [],
             users: [],
             communityNotes: [],
-            analytics: {
-                totalUsers: 0,
-                guestUsers: 0,
-                registeredUsers: 0,
-                sessions: []
-            },
-            userRatings: {}
+            analytics: { totalUsers: 0, guestUsers: 0, registeredUsers: 0, sessions: [] },
         };
-
         window.currentUser = null;
         window.currentCourse = null;
         window.currentNote = null;
@@ -1195,41 +425,35 @@ More detailed content...
         window.developerModeEnabled = false;
         window.userRating = 0;
 
-        // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
             initializeDefaultData();
             updateUI();
+            renderCourseGrid();
             showPage('home');
-            
-            // Track page view
             trackEvent('page_view', { page: 'home' });
         });
 
-        // Data Management
+        // Persistence
         function loadData() {
-            const savedData = localStorage.getItem('apExamAppData');
-            if (savedData) {
-                window.appData = { ...window.appData, ...JSON.parse(savedData) };
+            const saved = localStorage.getItem('apExamAppData');
+            if (saved) {
+                try { window.appData = JSON.parse(saved); } catch(e) {}
             }
-            
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
-                window.currentUser = JSON.parse(savedUser);
+                try { window.currentUser = JSON.parse(savedUser); } catch(e) {}
             }
         }
-
         function saveData() {
             localStorage.setItem('apExamAppData', JSON.stringify(window.appData));
-            if (window.currentUser) {
-                localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
-            } else {
-                localStorage.removeItem('currentUser');
-            }
+            if (window.currentUser) localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
+            else localStorage.removeItem('currentUser');
         }
 
+        // Default data
         function initializeDefaultData() {
-            if (window.appData.courses.length === 0) {
+            if (!window.appData.courses || window.appData.courses.length === 0) {
                 window.appData.courses = [
                     {
                         id: 1,
@@ -1261,20 +485,17 @@ More detailed content...
                         links: []
                     }
                 ];
+                saveData();
             }
+            if (!window.appData.communityNotes) window.appData.communityNotes = [];
+            if (!window.appData.users) window.appData.users = [];
         }
 
         // Navigation
         function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show target page
-            document.getElementById(pageId + '-page').classList.add('active');
-            
-            // Update UI based on page
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const pageEl = document.getElementById(pageId + '-page');
+            if (pageEl) pageEl.classList.add('active');
             updatePageContent(pageId);
             trackEvent('page_view', { page: pageId });
         }
@@ -1303,96 +524,86 @@ More detailed content...
             }
         }
 
-        // Course Management
+        // Course Grid
         function renderCourseGrid() {
             const grid = document.getElementById('course-grid');
             grid.innerHTML = '';
-            
-            window.appData.courses.forEach(course => {
-                const courseCard = document.createElement('div');
-                courseCard.className = 'course-card';
-                courseCard.onclick = () => openCourse(course.id);
-                
-                courseCard.innerHTML = `
-                    <button class="delete-course" onclick="event.stopPropagation(); deleteCourse(${course.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                    <div class="course-emoji">${course.icon}</div>
-                    <div class="course-title">${course.title}</div>
-                    <div class="course-description">${course.description}</div>
+            (window.appData.courses || []).forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.onclick = () => openCourse(course.id);
+
+                card.innerHTML = `
+                    <button class="delete-course" title="Delete course" onclick="event.stopPropagation(); deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
+                    <button class="edit-course" title="Edit notes" onclick="event.stopPropagation(); editCourse(${course.id})"><i class="fas fa-edit"></i></button>
+                    <div class="course-emoji">${course.icon || ''}</div>
+                    <div class="course-title">${escapeHtml(course.title)}</div>
+                    <div class="course-description">${escapeHtml(course.description)}</div>
                 `;
-                
-                grid.appendChild(courseCard);
+                grid.appendChild(card);
             });
         }
 
         function openCourse(courseId) {
             window.currentCourse = window.appData.courses.find(c => c.id === courseId);
-            if (window.currentCourse) {
-                showPage('course-detail');
-            }
+            if (!window.currentCourse) return;
+            showPage('course-detail');
+        }
+
+        function editCourse(courseId) {
+            openCourse(courseId);
+            // wait for page render then open editor
+            setTimeout(() => {
+                if (!window.developerModeEnabled) {
+                    showNotification('Enable developer mode to edit notes', 'error');
+                    showPage('dev');
+                    return;
+                }
+                toggleCourseEditor(true);
+            }, 100);
         }
 
         function deleteCourse(courseId) {
-            if (confirm('Are you sure you want to delete this course?')) {
-                window.appData.courses = window.appData.courses.filter(c => c.id !== courseId);
-                saveData();
-                renderCourseGrid();
-                showNotification('Course deleted successfully', 'success');
-                trackEvent('course_deleted', { courseId });
-            }
+            if (!confirm('Are you sure you want to delete this course?')) return;
+            window.appData.courses = window.appData.courses.filter(c => c.id !== courseId);
+            saveData();
+            renderCourseGrid();
+            showNotification('Course deleted successfully', 'success');
+            trackEvent('course_deleted', { courseId });
         }
 
         // Developer Mode
         function toggleAddCourseForm() {
-            const form = document.getElementById('add-course-form');
-            form.classList.toggle('hidden');
+            document.getElementById('add-course-form').classList.toggle('hidden');
         }
-
         function saveNewCourse() {
             const title = document.getElementById('new-course-title').value.trim();
             const emoji = document.getElementById('new-course-emoji').value.trim();
             const description = document.getElementById('new-course-description').value.trim();
             const notes = document.getElementById('new-course-notes').value.trim();
-            
+
             if (!title || !emoji || !description) {
                 showNotification('Please fill in all required fields', 'error');
                 return;
             }
-            
-            const newCourse = {
-                id: Date.now(),
-                title,
-                icon: emoji,
-                description,
-                notes: notes || '# Course Overview\n\nNo notes added yet.',
-                links: []
-            };
-            
+
+            const newCourse = { id: Date.now(), title, icon: emoji, description, notes: notes || '<p>No notes yet</p>', links: [] };
             window.appData.courses.push(newCourse);
             saveData();
             renderCourseGrid();
             toggleAddCourseForm();
-            
-            // Clear form
             document.getElementById('new-course-title').value = '';
             document.getElementById('new-course-emoji').value = '';
             document.getElementById('new-course-description').value = '';
             document.getElementById('new-course-notes').value = '';
-            
             showNotification('Course added successfully', 'success');
             trackEvent('course_added', { courseId: newCourse.id });
         }
 
         function updateDeveloperMode() {
-            const body = document.body;
-            if (window.developerModeEnabled) {
-                body.classList.add('developer-mode');
-            } else {
-                body.classList.remove('developer-mode');
-            }
+            if (window.developerModeEnabled) document.body.classList.add('developer-mode');
+            else document.body.classList.remove('developer-mode');
         }
-
         function exitDeveloperMode() {
             window.developerModeEnabled = false;
             updateDeveloperMode();
@@ -1400,229 +611,254 @@ More detailed content...
             showNotification('Exited developer mode', 'info');
         }
 
-        // Course Detail
+        // Course Detail & Notes Editor
         function renderCourseDetail() {
             if (!window.currentCourse) return;
-            
             document.getElementById('course-detail-title').textContent = window.currentCourse.title;
-            
-            // Render notes
-            const notesContent = document.getElementById('notes-dropdowns');
-            notesContent.innerHTML = parseMarkdown(window.currentCourse.notes);
-            
-            // Render links
+
+            // Render notes (if notes are HTML (contain '<' and '>'), render as HTML; otherwise parse markdown)
+            renderCourseNotes();
+
             renderLinks();
-            
-            // Initialize chat
             initializeChat();
+
+            // show editor toggle state
+            const editorWrapper = document.getElementById('course-notes-editor-wrapper');
+            if (editorWrapper) editorWrapper.classList.remove('active');
+            document.getElementById('course-notes-editor-wrapper').classList.add('hidden');
+            document.getElementById('edit-notes-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
         }
 
-        // Links Section
+        function renderCourseNotes() {
+            const el = document.getElementById('notes-dropdowns');
+            const raw = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
+            if (containsHTML(raw)) {
+                el.innerHTML = raw;
+            } else {
+                el.innerHTML = parseMarkdown(raw);
+            }
+        }
+
+        function toggleCourseEditor(open) {
+            if (!window.developerModeEnabled) {
+                showNotification('Enable developer mode to edit notes', 'error');
+                return;
+            }
+            const wrapper = document.getElementById('course-notes-editor-wrapper');
+            const viewer = document.getElementById('notes-dropdowns');
+            const editBtn = document.getElementById('edit-notes-button');
+
+            if (open) {
+                // populate editor with HTML version of notes
+                let content = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
+                if (!containsHTML(content)) content = parseMarkdown(content);
+                document.getElementById('course-notes-editor').innerHTML = content;
+                wrapper.classList.remove('hidden');
+                wrapper.classList.add('active');
+                viewer.classList.add('hidden');
+                editBtn.classList.add('hidden');
+                // focus the editor
+                setTimeout(() => { document.getElementById('course-notes-editor').focus(); }, 50);
+            } else {
+                wrapper.classList.remove('active');
+                wrapper.classList.add('hidden');
+                viewer.classList.remove('hidden');
+                editBtn.classList.remove('hidden');
+            }
+        }
+
+        function saveCourseNotes() {
+            if (!window.currentCourse) return;
+            const html = document.getElementById('course-notes-editor').innerHTML;
+            // Save as HTML so editing preserves formatting
+            window.currentCourse.notes = html;
+            // update course in main list
+            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
+            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
+            saveData();
+            toggleCourseEditor(false);
+            renderCourseNotes();
+            showNotification('Notes saved', 'success');
+            trackEvent('course_notes_saved', { courseId: window.currentCourse.id });
+        }
+
+        // Toolbar commands
+        function formatSelection(cmd) {
+            // support simple commands
+            if (cmd === 'bold') document.execCommand('bold', false, null);
+        }
+        function insertBlock(tag) {
+            const selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) {
+                // insert at end
+                const editor = document.getElementById('course-notes-editor');
+                editor.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`);
+                return;
+            }
+            const range = selection.getRangeAt(0);
+            const content = range.extractContents();
+            const container = document.createElement(tag);
+            container.appendChild(content);
+            range.insertNode(container);
+            // collapse after inserted block
+            range.collapse(false);
+        }
+        function setFontSize(size) {
+            if (!size) return;
+            // wrap selection in span with style
+            const selection = window.getSelection();
+            if (!selection || selection.isCollapsed) return;
+            const range = selection.getRangeAt(0);
+            const span = document.createElement('span');
+            span.style.fontSize = size;
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+        function insertDropdownSection() {
+            const editor = document.getElementById('course-notes-editor');
+            const dropdownHtml = `<details><summary>New Section</summary><div style="padding: .5rem 0;">Detailed content here...</div></details><br/>`;
+            // insert at cursor if possible
+            const selection = window.getSelection();
+            if (selection && selection.rangeCount) {
+                const range = selection.getRangeAt(0);
+                const node = document.createElement('div');
+                node.innerHTML = dropdownHtml;
+                const frag = document.createDocumentFragment();
+                while (node.firstChild) frag.appendChild(node.firstChild);
+                range.insertNode(frag);
+            } else {
+                editor.insertAdjacentHTML('beforeend', dropdownHtml);
+            }
+        }
+
+        function addNewDropdownSection() {
+            // Utility to append a new details section to course notes quickly
+            if (!window.currentCourse) {
+                showNotification('No course selected', 'error');
+                return;
+            }
+            const toAdd = `<details><summary>New Section</summary><div style="padding:.5rem 0;">Your content...</div></details><br/>`;
+            if (!window.currentCourse.notes) window.currentCourse.notes = '';
+            if (containsHTML(window.currentCourse.notes)) {
+                window.currentCourse.notes += toAdd;
+            } else {
+                // convert markdown to HTML then append
+                window.currentCourse.notes = parseMarkdown(window.currentCourse.notes) + toAdd;
+            }
+            // update course and save
+            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
+            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
+            saveData();
+            renderCourseNotes();
+            showNotification('Section added', 'success');
+        }
+
+        function containsHTML(str) {
+            return /<[^>]+>/.test(str);
+        }
+
+        // Links
         function renderLinks() {
             const linksGrid = document.getElementById('links-grid');
             linksGrid.innerHTML = '';
-            
-            if (!window.currentCourse.links || window.currentCourse.links.length === 0) {
-                return;
-            }
-            
-            window.currentCourse.links.forEach((link, index) => {
-                const linkCard = document.createElement('div');
-                linkCard.className = 'link-card';
-                linkCard.innerHTML = `
+            if (!window.currentCourse || !window.currentCourse.links) return;
+            window.currentCourse.links.forEach((link, idx) => {
+                const card = document.createElement('div');
+                card.className = 'link-card';
+                card.innerHTML = `
                     <div>
-                        <div class="link-title">${link.title}</div>
-                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-size: 0.875rem;">
-                            <i class="fas fa-external-link-alt"></i>
-                            ${link.url}
+                        <div class="link-title">${escapeHtml(link.title)}</div>
+                        <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); font-size:.875rem;">
+                            <i class="fas fa-external-link-alt"></i> ${escapeHtml(link.url)}
                         </a>
                     </div>
-                    <button class="delete-link" onclick="deleteLink(${index})">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <button class="delete-link" onclick="deleteLink(${idx})"><i class="fas fa-trash"></i></button>
                 `;
-                linksGrid.appendChild(linkCard);
+                linksGrid.appendChild(card);
             });
         }
-
-        function toggleAddLinkForm() {
-            const form = document.getElementById('add-link-form');
-            form.classList.toggle('hidden');
-        }
-
+        function toggleAddLinkForm() { document.getElementById('add-link-form').classList.toggle('hidden'); }
         function saveNewLink() {
             const title = document.getElementById('new-link-title').value.trim();
             const url = document.getElementById('new-link-url').value.trim();
-            
-            if (!title || !url) {
-                showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            if (!isValidUrl(url)) {
-                showNotification('Please enter a valid URL', 'error');
-                return;
-            }
-            
-            if (!window.currentCourse.links) {
-                window.currentCourse.links = [];
-            }
-            
+            if (!title || !url) { showNotification('Please fill in all fields', 'error'); return; }
+            if (!isValidUrl(url)) { showNotification('Please enter a valid URL', 'error'); return; }
+            if (!window.currentCourse.links) window.currentCourse.links = [];
             window.currentCourse.links.push({ title, url });
-            
-            // Update the course in the main data
-            const courseIndex = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (courseIndex !== -1) {
-                window.appData.courses[courseIndex] = window.currentCourse;
-            }
-            
+            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
+            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
             saveData();
             renderLinks();
             toggleAddLinkForm();
-            
-            // Clear form
             document.getElementById('new-link-title').value = '';
             document.getElementById('new-link-url').value = '';
-            
             showNotification('Link added successfully', 'success');
         }
-
         function deleteLink(index) {
+            if (!window.currentCourse) return;
             window.currentCourse.links.splice(index, 1);
-            
-            // Update the course in the main data
-            const courseIndex = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (courseIndex !== -1) {
-                window.appData.courses[courseIndex] = window.currentCourse;
-            }
-            
+            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
+            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
             saveData();
             renderLinks();
             showNotification('Link deleted successfully', 'success');
         }
 
-        // AI Chat
+        // Chat (same as before)
         function initializeChat() {
             const chatContainer = document.getElementById('chat-container');
-            
             if (!window.currentUser) {
-                chatContainer.innerHTML = `
-                    <div class="chat-locked">
-                        <i class="fas fa-lock" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                        <p>Please sign in to use the AI study assistant</p>
-                        <button class="btn btn-primary" onclick="showPage('auth')">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Sign In
-                        </button>
-                    </div>
-                `;
+                chatContainer.innerHTML = `<div class="chat-locked"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:1rem;"></i><p>Please sign in to use the AI study assistant</p><button class="btn btn-primary" onclick="showPage('auth')"><i class="fas fa-sign-in-alt"></i> Sign In</button></div>`;
                 return;
             }
-            
-            chatContainer.innerHTML = `
-                <div class="chat-messages" id="chat-messages"></div>
-                <div class="chat-input-container">
-                    <input type="text" id="chat-input" class="chat-input" placeholder="Ask me anything about ${window.currentCourse.title}..." onkeypress="handleChatKeyPress(event)">
-                    <button class="btn btn-primary" onclick="sendChatMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                        Send
-                    </button>
-                </div>
-            `;
-            
-            // Add welcome message
-            addChatMessage('bot', `Hello! I'm your AI study assistant for ${window.currentCourse.title}. How can I help you today?`);
+            chatContainer.innerHTML = `<div class="chat-messages" id="chat-messages"></div><div class="chat-input-container"><input type="text" id="chat-input" class="chat-input" placeholder="Ask me anything about ${escapeHtml(window.currentCourse.title)}..." onkeypress="handleChatKeyPress(event)"><button class="btn btn-primary" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i> Send</button></div>`;
+            addChatMessage('bot', `Hello! I'm your AI study assistant for ${escapeHtml(window.currentCourse.title)}. How can I help you today?`);
         }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
+        function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
         function sendChatMessage() {
             const input = document.getElementById('chat-input');
+            if (!input) return;
             const message = input.value.trim();
-            
             if (!message) return;
-            
             addChatMessage('user', message);
             input.value = '';
-            
-            // Simulate AI response - In production, replace with actual AI API call
             setTimeout(() => {
-                const responses = [
-                    "That's an excellent question! Let me help you understand that concept better.",
-                    "I can see you're thinking deeply about this topic. Here's a helpful explanation:",
-                    "This is a key concept for your exam. Let me break it down for you:",
-                    "Great question! This often appears on AP exams. Here's what you need to know:",
-                    "I understand this can be challenging. Let me provide a clear explanation:"
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addChatMessage('bot', randomResponse);
-            }, 1000);
+                const responses = ["That's an excellent question!","Here's a helpful explanation.","Let me break it down for you."];
+                addChatMessage('bot', responses[Math.floor(Math.random()*responses.length)]);
+            }, 900);
         }
-
         function addChatMessage(sender, message) {
-            const messagesContainer = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            
+            const container = document.getElementById('chat-messages');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
             const icon = sender === 'user' ? 'fas fa-user' : 'fas fa-robot';
-            messageDiv.innerHTML = `<i class="${icon}"></i> ${message}`;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            div.innerHTML = `<i class="${icon}"></i> ${escapeHtml(message)}`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
         }
 
-        // Community Features with Rating System
+        // Community & Notes + Rating
         function renderCommunityPage() {
-            // Populate course dropdowns
             const uploadSelect = document.getElementById('upload-course-select');
             const filterSelect = document.getElementById('filter-course');
-            
             uploadSelect.innerHTML = '<option value="">Select a course</option>';
             filterSelect.innerHTML = '<option value="">All Courses</option>';
-            
-            window.appData.courses.forEach(course => {
-                const uploadOption = document.createElement('option');
-                uploadOption.value = course.id;
-                uploadOption.textContent = course.title;
-                uploadSelect.appendChild(uploadOption);
-                
-                const filterOption = document.createElement('option');
-                filterOption.value = course.id;
-                filterOption.textContent = course.title;
-                filterSelect.appendChild(filterOption);
+            (window.appData.courses || []).forEach(course => {
+                const o1 = document.createElement('option'); o1.value = course.id; o1.textContent = course.title; uploadSelect.appendChild(o1);
+                const o2 = document.createElement('option'); o2.value = course.id; o2.textContent = course.title; filterSelect.appendChild(o2);
             });
-            
-            // Show/hide guest message
             const guestMessage = document.getElementById('upload-guest-message');
-            if (window.currentUser) {
-                guestMessage.classList.add('hidden');
-            } else {
-                guestMessage.classList.remove('hidden');
-            }
-            
-            // Render community notes
+            if (window.currentUser) guestMessage.classList.add('hidden'); else guestMessage.classList.remove('hidden');
             applyFilters();
         }
 
         function uploadNote() {
-            if (!window.currentUser) {
-                showNotification('Please sign in to share notes', 'error');
-                return;
-            }
-            
+            if (!window.currentUser) { showNotification('Please sign in to share notes', 'error'); return; }
             const courseId = parseInt(document.getElementById('upload-course-select').value);
             const title = document.getElementById('upload-note-title').value.trim();
             const content = document.getElementById('upload-note-content').value.trim();
-            
-            if (!courseId || !title || !content) {
-                showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
+            if (!courseId || !title || !content) { showNotification('Please fill in all fields', 'error'); return; }
             const newNote = {
                 id: Date.now(),
                 courseId,
@@ -1635,238 +871,177 @@ More detailed content...
                 ratings: [],
                 averageRating: 0
             };
-            
             window.appData.communityNotes.push(newNote);
             saveData();
-            renderCommunityPage();
-            
-            // Clear form
             document.getElementById('upload-course-select').value = '';
             document.getElementById('upload-note-title').value = '';
             document.getElementById('upload-note-content').value = '';
-            
             showNotification('Note shared successfully', 'success');
             trackEvent('note_uploaded', { noteId: newNote.id });
+            renderCommunityPage();
         }
 
         function applyFilters() {
             const courseFilter = document.getElementById('filter-course').value;
             const ratingFilter = document.getElementById('filter-rating').value;
             const sortBy = document.getElementById('filter-sort').value;
-            
-            let filteredNotes = [...window.appData.communityNotes];
-            
-            // Filter by course
-            if (courseFilter) {
-                filteredNotes = filteredNotes.filter(note => note.courseId == courseFilter);
-            }
-            
-            // Filter by rating
-            if (ratingFilter) {
-                filteredNotes = filteredNotes.filter(note => note.averageRating >= parseInt(ratingFilter));
-            }
-            
-            // Sort notes
-            filteredNotes.sort((a, b) => {
-                switch(sortBy) {
-                    case 'rating':
-                        return b.averageRating - a.averageRating;
-                    case 'newest':
-                        return new Date(b.createdAt) - new Date(a.createdAt);
-                    case 'oldest':
-                        return new Date(a.createdAt) - new Date(b.createdAt);
-                    default:
-                        return b.averageRating - a.averageRating;
-                }
+            let notes = (window.appData.communityNotes || []).slice();
+            if (courseFilter) notes = notes.filter(n => n.courseId == courseFilter);
+            if (ratingFilter) notes = notes.filter(n => (n.averageRating || 0) >= parseInt(ratingFilter));
+            notes.sort((a,b) => {
+                if (sortBy === 'rating') return (b.averageRating||0) - (a.averageRating||0);
+                if (sortBy === 'newest') return new Date(b.createdAt) - new Date(a.createdAt);
+                if (sortBy === 'oldest') return new Date(a.createdAt) - new Date(b.createdAt);
+                return (b.averageRating||0) - (a.averageRating||0);
             });
-            
-            renderCommunityNotes(filteredNotes);
+            renderCommunityNotes(notes);
         }
 
         function renderCommunityNotes(notes) {
-            const notesList = document.getElementById('community-notes-list');
-            notesList.innerHTML = '';
-            
+            const list = document.getElementById('community-notes-list');
+            list.innerHTML = '';
             notes.forEach(note => {
-                const course = window.appData.courses.find(c => c.id === note.courseId);
-                const noteCard = document.createElement('div');
-                noteCard.className = 'note-card';
-                
-                // Generate rating stars
+                const course = (window.appData.courses || []).find(c => c.id === note.courseId);
+                const card = document.createElement('div');
+                card.className = 'note-card';
+
                 const ratingStars = generateRatingStars(note.averageRating || 0);
-                
-                noteCard.innerHTML = `
-                    <div class="note-meta">
-                        ${course ? course.title : 'Unknown Course'} • by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}
-                    </div>
-                    <h3 class="mb-2">${note.title}</h3>
-                    <div class="rating-display mb-2">
-                        ${ratingStars}
-                        <span>(${note.ratings ? note.ratings.length : 0} ratings)</span>
-                    </div>
-                    <button class="btn btn-outline" onclick="viewNote(${note.id})">
-                        <i class="fas fa-eye"></i>
-                        View Notes
-                    </button>
+                const ratingsCount = note.ratings ? note.ratings.length : 0;
+
+                card.innerHTML = `
+                    <div class="note-meta">${course ? escapeHtml(course.title) : 'Unknown Course'} • by ${escapeHtml(note.author)} • ${new Date(note.createdAt).toLocaleDateString()}</div>
+                    <h3 class="mb-2">${escapeHtml(note.title)}</h3>
+                    <div class="rating-display mb-2">${ratingStars} <span>(${ratingsCount} ratings)</span></div>
+                    <button class="btn btn-outline" onclick="viewNote(${note.id})"><i class="fas fa-eye"></i> View Notes</button>
                 `;
-                
-                notesList.appendChild(noteCard);
+                list.appendChild(card);
             });
         }
 
         function generateRatingStars(rating) {
+            // rating may be decimal
             let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += '<i class="fas fa-star" style="color: #fbbf24;"></i>';
-                } else if (i - 0.5 <= rating) {
-                    stars += '<i class="fas fa-star-half-alt" style="color: #fbbf24;"></i>';
-                } else {
-                    stars += '<i class="far fa-star" style="color: #d1d5db;"></i>';
-                }
+            for (let i=1;i<=5;i++) {
+                if (rating >= i) stars += '<i class="fas fa-star" style="color:#fbbf24;"></i>';
+                else if (rating > i-1 && rating < i) stars += '<i class="fas fa-star-half-alt" style="color:#fbbf24;"></i>';
+                else stars += '<i class="far fa-star" style="color:#d1d5db;"></i>';
             }
             return stars;
         }
 
         function viewNote(noteId) {
-            const note = window.appData.communityNotes.find(n => n.id === noteId);
+            const note = (window.appData.communityNotes || []).find(n => n.id === noteId);
             if (!note) return;
-            
             window.currentNote = note;
-            
             document.getElementById('view-note-title').textContent = note.title;
-            document.getElementById('view-note-meta').textContent = 
-                `by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
-            
-            // Display rating
-            const ratingStars = generateRatingStars(note.averageRating || 0);
-            document.getElementById('view-rating-stars').innerHTML = ratingStars;
-            document.getElementById('view-rating-text').textContent = 
-                `${note.averageRating ? note.averageRating.toFixed(1) : '0'} (${note.ratings ? note.ratings.length : 0} ratings)`;
-            
-            // Show/hide user rating section
+            document.getElementById('view-note-meta').textContent = `by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
+
+            // display rating
+            document.getElementById('view-rating-stars').innerHTML = generateRatingStars(note.averageRating || 0);
+            document.getElementById('view-rating-text').textContent = `${note.averageRating ? note.averageRating.toFixed(1) : '0'} (${note.ratings ? note.ratings.length : 0} ratings)`;
+
+            // user rating section visibility
             const userRatingSection = document.getElementById('user-rating-section');
             if (window.currentUser && window.currentUser.id !== note.authorId) {
                 userRatingSection.classList.remove('hidden');
-                resetUserRating();
+                buildUserRatingStars();
+                window.userRating = 0;
             } else {
                 userRatingSection.classList.add('hidden');
             }
-            
-            // Parse and display content
-            document.getElementById('view-note-content').innerHTML = parseMarkdown(note.content);
-            
+
+            // show content (content may be markdown or html)
+            const contentEl = document.getElementById('view-note-content');
+            if (containsHTML(note.content)) contentEl.innerHTML = note.content;
+            else contentEl.innerHTML = parseMarkdown(note.content);
+
             showPage('note-view');
         }
 
-        function resetUserRating() {
-            window.userRating = 0;
+        // Build interactive stars for user rating (hover + click)
+        function buildUserRatingStars() {
+            const container = document.getElementById('user-rating-stars');
+            container.innerHTML = '';
+            for (let i=1;i<=5;i++) {
+                const star = document.createElement('i');
+                star.className = 'fas fa-star rating-star';
+                star.dataset.rating = i;
+                star.addEventListener('mouseenter', () => previewUserRating(i));
+                star.addEventListener('mouseleave', () => previewUserRating(window.userRating || 0));
+                star.addEventListener('click', () => setUserRating(i));
+                container.appendChild(star);
+            }
+            previewUserRating(0); // reset visuals
+        }
+
+        function previewUserRating(rating) {
             const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-            stars.forEach((star, index) => {
-                star.classList.remove('active');
+            stars.forEach((s, idx) => {
+                const i = idx + 1;
+                s.classList.remove('active', 'hover');
+                if (i <= rating) {
+                    s.classList.add('active');
+                }
             });
         }
 
         function setUserRating(rating) {
             window.userRating = rating;
-            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
+            previewUserRating(rating);
         }
 
         function submitRating() {
-            if (!window.currentUser || !window.currentNote || window.userRating === 0) {
+            if (!window.currentUser || !window.currentNote || !window.userRating) {
                 showNotification('Please select a rating', 'error');
                 return;
             }
-            
             const note = window.currentNote;
             const userId = window.currentUser.id;
-            
-            // Initialize ratings array if it doesn't exist
-            if (!note.ratings) {
-                note.ratings = [];
-            }
-            
-            // Check if user already rated this note
-            const existingRatingIndex = note.ratings.findIndex(r => r.userId === userId);
-            
-            if (existingRatingIndex !== -1) {
-                // Update existing rating
-                note.ratings[existingRatingIndex].rating = window.userRating;
-            } else {
-                // Add new rating
-                note.ratings.push({
-                    userId: userId,
-                    rating: window.userRating
-                });
-            }
-            
-            // Calculate average rating
-            const totalRating = note.ratings.reduce((sum, r) => sum + r.rating, 0);
-            note.averageRating = totalRating / note.ratings.length;
-            
-            // Update the note in the main data
-            const noteIndex = window.appData.communityNotes.findIndex(n => n.id === note.id);
-            if (noteIndex !== -1) {
-                window.appData.communityNotes[noteIndex] = note;
-            }
-            
+            if (!note.ratings) note.ratings = [];
+            const existingIndex = note.ratings.findIndex(r => r.userId === userId);
+            if (existingIndex !== -1) note.ratings[existingIndex].rating = window.userRating;
+            else note.ratings.push({ userId, rating: window.userRating });
+            const total = note.ratings.reduce((s,r) => s + r.rating, 0);
+            note.averageRating = total / note.ratings.length;
+            const noteIdx = window.appData.communityNotes.findIndex(n => n.id === note.id);
+            if (noteIdx !== -1) window.appData.communityNotes[noteIdx] = note;
             saveData();
-            viewNote(note.id); // Refresh the view
             showNotification('Rating submitted successfully!', 'success');
             trackEvent('note_rated', { noteId: note.id, rating: window.userRating });
+            // refresh view and community list
+            viewNote(note.id);
+            renderCommunityPage();
         }
 
-        // Developer Dashboard
+        // Dev Dashboard
         function renderDevDashboard() {
             if (!window.developerModeEnabled) {
                 document.getElementById('dev-password-section').classList.remove('hidden');
                 document.getElementById('dev-content').classList.add('hidden');
                 return;
             }
-            
             document.getElementById('dev-password-section').classList.add('hidden');
             document.getElementById('dev-content').classList.remove('hidden');
-            
-            // Update stats
-            document.getElementById('total-users').textContent = window.appData.analytics.totalUsers;
-            document.getElementById('guest-users').textContent = window.appData.analytics.guestUsers;
-            document.getElementById('total-notes').textContent = window.appData.communityNotes.length;
+            document.getElementById('total-users').textContent = window.appData.analytics.totalUsers || (window.appData.users ? window.appData.users.length : 0);
+            document.getElementById('guest-users').textContent = window.appData.analytics.guestUsers || 0;
+            document.getElementById('total-notes').textContent = window.appData.communityNotes.length || 0;
             document.getElementById('avg-session').textContent = calculateAvgSessionTime();
-            
-            // Render users table
-            const usersTableBody = document.getElementById('users-table-body');
-            usersTableBody.innerHTML = '';
-            window.appData.users.forEach(user => {
-                const row = document.createElement('tr');
-                row.className = 'table-row';
-                row.innerHTML = `
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                `;
-                usersTableBody.appendChild(row);
+            const usersBody = document.getElementById('users-table-body');
+            usersBody.innerHTML = '';
+            (window.appData.users || []).forEach(u => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row';
+                tr.innerHTML = `<td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td>${new Date(u.createdAt).toLocaleDateString()}</td>`;
+                usersBody.appendChild(tr);
             });
-            
-            // Render activity log
-            const activityTableBody = document.getElementById('activity-table-body');
-            activityTableBody.innerHTML = '';
-            const recentActivities = window.appData.analytics.sessions.slice(-10).reverse();
-            recentActivities.forEach(activity => {
-                const row = document.createElement('tr');
-                row.className = 'table-row';
-                row.innerHTML = `
-                    <td>${activity.ev}</td>
-                    <td>${activity.userId || 'Guest'}</td>
-                    <td>${new Date(activity.timestamp).toLocaleString()}</td>
-                `;
-                activityTableBody.appendChild(row);
+            const actBody = document.getElementById('activity-table-body');
+            actBody.innerHTML = '';
+            const recent = (window.appData.analytics.sessions || []).slice(-10).reverse();
+            recent.forEach(a => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row';
+                tr.innerHTML = `<td>${escapeHtml(a.ev)}</td><td>${escapeHtml(a.userId || 'Guest')}</td><td>${new Date(a.timestamp).toLocaleString()}</td>`;
+                actBody.appendChild(tr);
             });
         }
 
@@ -1877,100 +1052,49 @@ More detailed content...
                 updateDeveloperMode();
                 renderDevDashboard();
                 showNotification('Developer mode enabled', 'success');
-            } else {
-                showNotification('Incorrect password', 'error');
-            }
+            } else showNotification('Incorrect password', 'error');
         }
+        function calculateAvgSessionTime() { if (!window.appData.analytics.sessions || window.appData.analytics.sessions.length === 0) return '0m'; return Math.floor(Math.random()*30) + 'm'; }
 
-        function calculateAvgSessionTime() {
-            if (window.appData.analytics.sessions.length === 0) return '0m';
-            
-            // This is a simplified calculation
-            // In a real app, you'd track session start/end times
-            return Math.floor(Math.random() * 30) + 'm';
-        }
-
-        // Authentication
+        // Auth
         function updateAuthUI() {
-            const authButton = document.getElementById('auth-button');
+            const btn = document.getElementById('auth-button');
             if (window.currentUser) {
-                authButton.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${window.currentUser.name}`;
-                authButton.onclick = () => signOut();
-            } else {
-                authButton.innerHTML = `<i class="fas fa-sign-in-alt"></i> Sign In`;
-                authButton.onclick = () => showPage('auth');
-            }
+                btn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${escapeHtml(window.currentUser.name)}`;
+                btn.onclick = () => signOut();
+            } else { btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Sign In`; btn.onclick = () => showPage('auth'); }
         }
-
         function toggleAuthMode() {
             window.isSignUpMode = !window.isSignUpMode;
-            
             const title = document.getElementById('auth-title');
             const submitText = document.getElementById('auth-submit-text');
             const toggleText = document.getElementById('auth-toggle-text');
             const nameField = document.getElementById('name-field');
-            
-            if (window.isSignUpMode) {
-                title.textContent = 'Sign Up';
-                submitText.textContent = 'Sign Up';
-                toggleText.textContent = 'Already have an account? Sign In';
-                nameField.classList.remove('hidden');
-            } else {
-                title.textContent = 'Sign In';
-                submitText.textContent = 'Sign In';
-                toggleText.textContent = "Don't have an account? Sign Up";
-                nameField.classList.add('hidden');
-            }
+            if (window.isSignUpMode) { title.textContent = 'Sign Up'; submitText.textContent = 'Sign Up'; toggleText.textContent = 'Already have an account? Sign In'; nameField.classList.remove('hidden'); }
+            else { title.textContent = 'Sign In'; submitText.textContent = 'Sign In'; toggleText.textContent = "Don't have an account? Sign Up"; nameField.classList.add('hidden'); }
         }
-
-        function handleAuth(event) {
-            event.preventDefault();
-            
+        function handleAuth(e) {
+            e.preventDefault();
             const email = document.getElementById('auth-email').value.trim();
             const password = document.getElementById('auth-password').value;
             const name = document.getElementById('auth-name').value.trim();
-            
             if (window.isSignUpMode) {
-                // Sign Up
-                if (!name) {
-                    showNotification('Please enter your name', 'error');
-                    return;
-                }
-                
-                // Check if user already exists
-                const existingUser = window.appData.users.find(u => u.email === email);
-                if (existingUser) {
-                    showNotification('User with this email already exists', 'error');
-                    return;
-                }
-                
-                const newUser = {
-                    id: Date.now(),
-                    email,
-                    password, // In a real app, this would be hashed
-                    name,
-                    createdAt: new Date().toISOString()
-                };
-                
+                if (!name) { showNotification('Please enter your name', 'error'); return; }
+                const exists = (window.appData.users || []).find(u => u.email === email);
+                if (exists) { showNotification('User with this email already exists', 'error'); return; }
+                const newUser = { id: Date.now(), email, password, name, createdAt: new Date().toISOString() };
                 window.appData.users.push(newUser);
                 window.currentUser = newUser;
-                window.appData.analytics.totalUsers++;
-                window.appData.analytics.registeredUsers++;
-                
+                window.appData.analytics.totalUsers = (window.appData.analytics.totalUsers || 0) + 1;
+                window.appData.analytics.registeredUsers = (window.appData.analytics.registeredUsers || 0) + 1;
                 saveData();
                 updateUI();
                 showPage('home');
                 showNotification('Account created successfully', 'success');
                 trackEvent('user_signup', { userId: newUser.id });
-                
             } else {
-                // Sign In
-                const user = window.appData.users.find(u => u.email === email && u.password === password);
-                if (!user) {
-                    showNotification('Invalid email or password', 'error');
-                    return;
-                }
-                
+                const user = (window.appData.users || []).find(u => u.email === email && u.password === password);
+                if (!user) { showNotification('Invalid email or password', 'error'); return; }
                 window.currentUser = user;
                 saveData();
                 updateUI();
@@ -1979,7 +1103,6 @@ More detailed content...
                 trackEvent('user_signin', { userId: user.id });
             }
         }
-
         function signOut() {
             const userName = window.currentUser ? window.currentUser.name : 'User';
             window.currentUser = null;
@@ -1988,53 +1111,33 @@ More detailed content...
             showNotification(`Goodbye, ${userName}!`, 'info');
             trackEvent('user_signout');
         }
-
         function updateUI() {
             updateAuthUI();
-            
-            // Update other UI elements that depend on authentication
-            if (window.currentCourse) {
-                initializeChat(); // Reinitialize chat with auth state
-            }
+            if (window.currentCourse) initializeChat();
         }
 
-        // Utility Functions
-        function showNotification(message, type = 'info') {
-            const notificationBar = document.getElementById('notification-bar');
-            const notificationContent = document.getElementById('notification-content');
-            const notificationText = document.getElementById('notification-text');
-            const notificationIcon = document.getElementById('notification-icon');
-            
-            notificationText.textContent = message;
-            
-            // Set icon and styling based on type
-            notificationContent.className = 'notification-content';
+        // Utilities
+        function showNotification(message, type='info') {
+            const bar = document.getElementById('notification-bar');
+            const content = document.getElementById('notification-content');
+            const text = document.getElementById('notification-text');
+            const icon = document.getElementById('notification-icon');
+            text.textContent = message;
+            content.className = 'notification-content';
             switch(type) {
-                case 'success':
-                    notificationIcon.className = 'fas fa-check-circle';
-                    notificationContent.classList.add('notification-success');
-                    break;
-                case 'error':
-                    notificationIcon.className = 'fas fa-exclamation-circle';
-                    notificationContent.classList.add('notification-error');
-                    break;
-                case 'info':
-                default:
-                    notificationIcon.className = 'fas fa-info-circle';
-                    notificationContent.classList.add('notification-info');
-                    break;
+                case 'success': icon.className = 'fas fa-check-circle'; content.classList.add('notification-success'); break;
+                case 'error': icon.className = 'fas fa-exclamation-circle'; content.classList.add('notification-error'); break;
+                default: icon.className = 'fas fa-info-circle'; content.classList.add('notification-info'); break;
             }
-            
-            notificationBar.classList.add('show');
-            
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                notificationBar.classList.remove('show');
-            }, 3000);
+            bar.classList.add('show');
+            setTimeout(() => bar.classList.remove('show'), 3000);
         }
 
         function parseMarkdown(text) {
-            // Simple markdown parser for basic formatting
+            if (!text) return '';
+            // If the content contains HTML tags, treat it as HTML already
+            if (containsHTML(text)) return text;
+            // Basic markdown -> HTML
             let html = text
                 .replace(/^# (.*$)/gm, '<h1>$1</h1>')
                 .replace(/^## (.*$)/gm, '<h2>$1</h2>')
@@ -2042,54 +1145,38 @@ More detailed content...
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/^- (.*$)/gm, '<li>$1</li>')
                 .replace(/\n/g, '<br>');
-            
-            // Wrap consecutive list items in ul tags
             html = html.replace(/(<li>.*<\/li>)(<br>)*(?=<li>)/g, '$1');
             html = html.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
-            
+            // Convert simple details blocks inserted by user as markdown-ish (optional)
+            html = html.replace(/<details>/g, '<details>').replace(/<\/details>/g, '</details>');
             return html;
         }
 
         function isValidUrl(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
+            try { new URL(string); return true; } catch(_) { return false; }
         }
 
         function trackEvent(event, data = {}) {
-            const session = {
-                ev: event,
-                timestamp: new Date().toISOString(),
-                userType: window.currentUser ? 'registered' : 'guest',
-                userId: window.currentUser ? window.currentUser.id : null,
-                ...data
-            };
-            
-            window.appData.analytics.sessions.push(session);
-            
-            // Keep only last 1000 sessions
-            if (window.appData.analytics.sessions.length > 1000) {
-                window.appData.analytics.sessions = window.appData.analytics.sessions.slice(-1000);
-            }
-            
-            // Update counters
-            if (event === 'user_signup') {
-                window.appData.analytics.totalUsers++;
-                window.appData.analytics.registeredUsers++;
-            } else if (event === 'page_view' && !window.currentUser) {
-                window.appData.analytics.guestUsers++;
-            }
-            
+            const sess = { ev:event, timestamp: new Date().toISOString(), userType: window.currentUser ? 'registered' : 'guest', userId: window.currentUser ? window.currentUser.id : null, ...data };
+            window.appData.analytics.sessions = window.appData.analytics.sessions || [];
+            window.appData.analytics.sessions.push(sess);
+            if (window.appData.analytics.sessions.length > 1000) window.appData.analytics.sessions = window.appData.analytics.sessions.slice(-1000);
+            if (event === 'user_signup') { window.appData.analytics.totalUsers = (window.appData.analytics.totalUsers||0)+1; window.appData.analytics.registeredUsers = (window.appData.analytics.registeredUsers||0)+1; }
+            else if (event === 'page_view' && !window.currentUser) window.appData.analytics.guestUsers = (window.appData.analytics.guestUsers||0)+1;
             saveData();
         }
+        window.addEventListener('beforeunload', () => trackEvent('session_end'));
 
-        // Track session end
-        window.addEventListener('beforeunload', function() {
-            trackEvent('session_end');
-        });
+        // Helpers to avoid XSS in dynamic text (we still allow HTML for notes intentionally)
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+        }
+        function escapeAttr(str) { return escapeHtml(str).replace(/"/g, '&quot;'); }
+
+        // Helper: renderNoteView placeholder in case other code expects it
+        function renderNoteView() { /* nothing additional required; viewNote handles rendering */ }
+
     </script>
 </body>
-</html>  
+</html>
