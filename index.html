@@ -1,1339 +1,808 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>AP Exam Center</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --error: #ef4444;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0,0,0,.1);
-            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,.25);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AP Exam Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --primary:#6366f1;
+      --primary-dark:#4f46e5;
+      --accent:#06b6d4;
+      --success:#10b981;
+      --error:#ef4444;
+      --bg:#f8fafc;
+      --muted:#64748b;
+      --card-shadow: 0 6px 18px rgba(17,24,39,0.06);
+      --card-hover: 0 10px 30px rgba(17,24,39,0.09);
+      --radius: 12px;
+    }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-        }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #fbfdff 0%, #f3f6ff 100%);
+      color: #0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding-bottom:48px;
+    }
 
-        .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
+    .container{max-width:1200px;margin:0 auto;padding:20px}
 
-        /* Header */
-        .header { position: sticky; top: 0; height:72px; background: rgba(248,250,252,0.95); backdrop-filter: blur(10px); border-bottom:1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,.06); z-index:100; }
-        .header-content { display:flex; justify-content:space-between; align-items:center; height:100%; padding:0 1rem; }
-        .logo { display:flex; align-items:center; gap:.5rem; cursor:pointer; font-size:1.25rem; font-weight:bold; color:var(--primary); }
-        .nav-buttons { display:flex; gap:1rem; align-items:center; }
+    /* Header */
+    .header{
+      position:sticky;top:0;background:rgba(255,255,255,0.85);backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(15,23,42,0.06); z-index:80;
+    }
+    .header-content{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--primary);cursor:pointer}
+    .logo i{font-size:20px}
+    .nav-buttons{display:flex;gap:8px;align-items:center}
 
-        .btn {
-            padding:.5rem 1rem; border:none; border-radius:.5rem; cursor:pointer; font-size:.875rem; font-weight:500; transition:all .2s; text-decoration:none;
-            display:inline-flex; align-items:center; gap:.5rem; outline:none;
-        }
-        .btn:focus { outline:2px solid var(--primary); outline-offset:2px; }
-        .btn-primary { background-color:var(--primary); color:white; }
-        .btn-primary:hover { background-color:var(--primary-dark); }
-        .btn-outline { background:transparent; color:var(--primary); border:1px solid var(--primary); }
-        .btn-outline:hover { background:var(--primary); color:white; }
-        .btn-danger { background:var(--error); color:white; }
-        .btn-danger:hover { background:#dc2626; }
+    /* Buttons - modern */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:0;font-weight:600;
+      cursor:pointer;background:transparent;color:var(--primary);transition:all .15s ease;
+      box-shadow:none;
+    }
+    .btn i{opacity:.92}
+    .btn-primary{background:var(--primary);color:white;box-shadow: 0 6px 18px rgba(99,102,241,0.12)}
+    .btn-outline{border:1px solid rgba(99,102,241,0.12);background:transparent;color:var(--primary)}
+    .btn-danger{background:var(--error);color:white}
+    .btn:hover{transform:translateY(-2px)}
+    .btn:active{transform:translateY(0)}
 
-        /* Notification Bar */
-        .notification-bar { position:fixed; top:72px; left:0; right:0; z-index:99; transform:translateY(-100%); transition: transform .3s ease; }
-        .notification-bar.show { transform:translateY(0); }
-        .notification-content { background:white; margin:0 auto; max-width:1200px; padding:1rem; border-radius:0 0 .5rem .5rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:.5rem; }
-        .notification-success { border-left:4px solid var(--success); }
-        .notification-error { border-left:4px solid var(--error); }
-        .notification-info { border-left:4px solid var(--accent); }
+    /* Notification */
+    .notification-bar{position:fixed;left:0;right:0;top:68px;display:flex;justify-content:center;pointer-events:none}
+    .notification-content{pointer-events:all;background:white;border-radius:10px;padding:12px 16px;box-shadow:var(--card-shadow);border-left:4px solid var(--accent);margin:8px;width:min(980px,calc(100% - 40px));display:flex;gap:12px;align-items:center}
+    .notification-success{border-left-color:var(--success)}
+    .notification-error{border-left-color:var(--error)}
 
-        /* Pages */
-        .page { display:none; min-height:calc(100vh - 72px); padding:2rem 0; }
-        .page.active { display:block; }
+    /* Pages */
+    .page{display:none;padding:20px 0}
+    .page.active{display:block}
 
-        /* Hero */
-        .hero { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; text-align:center; padding:4rem 1rem; margin-bottom:2rem; border-radius:1rem; }
-        .hero h1 { font-size:3.5rem; font-weight:bold; margin-bottom:1rem; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
-        .hero p { font-size:1.25rem; opacity:0.9; }
+    /* Hero */
+    .hero{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:40px;border-radius:14px;margin-bottom:20px;box-shadow:var(--card-shadow)}
+    .hero h1{font-size:28px;margin-bottom:8px}
+    .hero p{opacity:.95}
 
-        /* Course Grid */
-        .course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; margin-bottom:2rem; }
-        .course-card { background:white; border-radius:.5rem; padding:1.5rem; box-shadow:var(--shadow); transition:all .3s ease; cursor:pointer; position:relative; border-top:4px solid var(--primary); }
-        .course-card:hover { transform: translateY(-8px); box-shadow:var(--shadow-lg); }
-        .course-emoji { font-size:3rem; margin-bottom:1rem; }
-        .course-title { font-size:1.25rem; font-weight:bold; margin-bottom:.5rem; color:var(--dark); }
-        .course-description { color:var(--gray); margin-bottom:1rem; }
+    /* Grid */
+    .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .course-card{background:white;border-radius:14px;padding:18px;box-shadow:var(--card-shadow);transition:box-shadow .18s,transform .18s;border-left:6px solid var(--primary);cursor:pointer;position:relative}
+    .course-card:hover{box-shadow:var(--card-hover);transform:translateY(-6px)}
+    .course-emoji{font-size:32px}
+    .course-title{font-weight:700;margin:8px 0}
+    .course-description{color:var(--muted);font-size:14px}
 
-        .delete-course { position:absolute; top:1rem; right:1rem; background:var(--error); color:white; border:none; border-radius:50%; width:2rem; height:2rem; cursor:pointer; display:none; align-items:center; justify-content:center; }
-        .edit-course { position:absolute; top:1rem; right:4rem; background:var(--secondary); color:white; border:none; border-radius:50%; width:2rem; height:2rem; cursor:pointer; display:none; align-items:center; justify-content:center; }
-        .developer-mode .delete-course, .developer-mode .edit-course { display:flex; }
+    .edit-course,.delete-course{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .edit-course{right:54px;background:linear-gradient(90deg,var(--secondary),#6b46c1);color:white;display:none}
+    .delete-course{display:none;background:linear-gradient(90deg,var(--error),#ef4444);color:white}
+    .developer-mode .edit-course,.developer-mode .delete-course{display:flex}
 
-        /* Developer Controls */
-        .dev-controls { background:white; border-radius:.5rem; padding:2rem; margin-bottom:2rem; box-shadow:var(--shadow); display:none; }
-        .developer-mode .dev-controls { display:block; }
+    /* Form fields - modern */
+    .form-group{margin-bottom:12px}
+    .form-label{display:block;font-weight:600;margin-bottom:8px;color:#0f172a}
+    .form-input,.form-select,.form-textarea{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);
+      background:white;box-shadow:inset 0 1px 2px rgba(15,23,42,0.02);font-size:14px;transition:box-shadow .12s,border-color .12s;
+    }
+    .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:rgba(99,102,241,0.7);box-shadow:0 8px 20px rgba(99,102,241,0.08)}
+    .form-textarea{min-height:140px;resize:vertical}
 
-        /* Course Detail */
-        .course-detail { background:white; border-radius:.5rem; padding:2rem; box-shadow:var(--shadow-lg); margin-bottom:2rem; }
-        .section { margin-bottom:2rem; }
-        .section-title { font-size:1.25rem; font-weight:bold; margin-bottom:1rem; color:var(--dark); }
+    /* Dev Controls */
+    .dev-controls{background:white;border-radius:12px;padding:18px;box-shadow:var(--card-shadow);margin-bottom:20px}
+    .dev-controls .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
-        /* Dropdown Notes */
-        .dropdown-section { background:#f8fafc; border:1px solid var(--border); border-radius:.5rem; margin-bottom:1rem; overflow:hidden; }
-        .dropdown-header { background:white; padding:1rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
-        .dropdown-content { padding:1rem; display:none; }
-        .dropdown-content.active { display:block; }
+    /* Course Detail */
+    .course-detail{background:white;border-radius:12px;padding:20px;box-shadow:var(--card-shadow)}
+    .section{margin-bottom:18px}
 
-        /* Notes Section */
-        .notes-content { background:#f8fafc; border-radius:.5rem; padding:1rem; border:1px solid var(--border); }
-        .notes-editor { display:none; }
-        .notes-editor.active { display:block; }
-        .notes-viewer.active { display:block; }
-        .notes-viewer { display:block; } /* default viewer visible */
+    /* Notes */
+    .notes-content{background:#fbfdff;border-radius:12px;padding:16px;border:1px solid rgba(15,23,42,0.04);color:#08203b}
+    .notes-editor, .community-note-editor{background:white;border-radius:10px;border:1px solid rgba(15,23,42,0.04);padding:12px;box-shadow:var(--card-shadow);min-height:180px}
 
-        /* Editor Toolbar */
-        .editor-toolbar { display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem; flex-wrap:wrap; }
-        .editor-toolbar .btn { padding:.4rem .6rem; font-size:.85rem; }
-        .editor-toolbar select { padding:.4rem .6rem; border-radius:.25rem; border:1px solid var(--border); }
+    .editor-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .editor-toolbar .btn{padding:8px 10px;border-radius:8px;font-size:13px}
+    .editor-toolbar select{padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)}
 
-        .course-notes-editor, .community-note-editor {
-            min-height: 220px;
-            padding: 1rem;
-            border-radius: .5rem;
-            border:1px solid var(--border);
-            background:white;
-            overflow:auto;
-        }
+    /* Links */
+    .links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 
-        /* Rating System */
-        .rating-container { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
-        .rating-stars { display:flex; gap:.25rem; }
-        .rating-star { cursor:pointer; font-size:1.25rem; color:#d1d5db; transition: color .12s ease; user-select:none; }
-        .rating-star.active { color:#fbbf24; }
-        .rating-star.hover { color:#f59e0b; }
-        .rating-display { display:flex; align-items:center; gap:.25rem; font-size:.875rem; color:var(--gray); }
+    /* Community notes list */
+    .note-card{background:white;border-radius:12px;padding:14px;box-shadow:var(--card-shadow);margin-bottom:12px}
+    .note-meta{color:var(--muted);font-size:13px;margin-bottom:6px}
+    .note-actions{display:flex;gap:8px;margin-top:10px}
+    .note-delete{display:none}
+    .developer-mode .note-delete{display:inline-flex}
 
-        /* Links */
-        .links-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; margin-bottom:1rem; }
-        .link-card { background:white; border:1px solid var(--border); border-radius:.5rem; padding:1rem; border-left:4px solid var(--accent); display:flex; justify-content:space-between; align-items:center; }
-        .link-title { font-weight:500; color:var(--dark); }
-        .delete-link { background:var(--error); color:white; border:none; border-radius:.25rem; padding:.25rem .5rem; cursor:pointer; font-size:.75rem; }
+    /* Rating stars */
+    .rating-stars i{font-size:18px;cursor:pointer}
+    .rating-star.active{color:#fbbf24}
+    .rating-star.hover{color:#f59e0b}
 
-        /* Markdown */
-        .markdown-content h1, .markdown-content h2, .markdown-content h3 { margin-bottom:.5rem; color:var(--dark); }
-        .markdown-content p { margin-bottom:1rem; }
-        .markdown-content strong { font-weight:bold; }
-        .markdown-content details { margin-bottom:1rem; border:1px solid var(--border); border-radius:.25rem; }
-        .markdown-content summary { padding:.5rem; background:#f8fafc; cursor:pointer; font-weight:500; }
+    /* Dev dashboard */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+    .stat-card{background:white;border-radius:12px;padding:16px;box-shadow:var(--card-shadow);text-align:center}
+    .stat-number{font-weight:800;color:var(--primary);font-size:20px}
+    .stat-label{color:var(--muted);font-size:13px}
 
-        /* Community note actions (dev only) */
-        .note-card .note-actions { margin-top: .75rem; display:flex; gap:.5rem; }
-        .developer-mode .note-card .note-delete { display:inline-flex; } 
-        .note-delete { display:none; background:var(--error); color:white; border:none; padding:.4rem .6rem; border-radius:.375rem; cursor:pointer; }
+    .table-container{background:white;border-radius:12px;box-shadow:var(--card-shadow);overflow:hidden;border:1px solid rgba(15,23,42,0.04)}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{padding:12px;text-align:left;border-bottom:1px solid rgba(15,23,42,0.04)}
+    .table th{background:#fbfdff;font-weight:700}
 
-        /* Responsive */
-        @media (max-width:768px) {
-            .header-content { flex-direction:column; gap:1rem; height:auto; padding:1rem; }
-            .header { height:auto; }
-            .hero h1 { font-size:2.5rem; }
-            .course-grid { grid-template-columns:1fr; }
-            .nav-buttons { flex-wrap:wrap; justify-content:center; }
-            .container { padding:0 .5rem; }
-            .filter-row { flex-direction:column; align-items:stretch; }
-        }
+    /* Dev course search */
+    .dev-search-row{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+    .dev-search-input{flex:1}
+    .dev-search-results{background:white;border-radius:12px;padding:12px;box-shadow:var(--card-shadow);max-height:260px;overflow:auto}
 
-        /* Utilities */
-        .hidden { display:none !important; }
-        .text-center { text-align:center; }
-        .mb-2 { margin-bottom:.5rem; }
-        .mb-4 { margin-bottom:1rem; }
-        .mt-4 { margin-top:1rem; }
-        .w-full { width:100%; }
-
-    </style>
+    /* Responsive tweaks */
+    @media (max-width:760px){
+      .header-content{flex-direction:column;align-items:flex-start}
+      .course-grid{grid-template-columns:1fr}
+      .dev-search-row{flex-direction:column;align-items:stretch}
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo" onclick="showPage('home')">
-                <i class="fas fa-graduation-cap"></i>
-                <span>AP Exam Center</span>
-            </div>
-            <div class="nav-buttons">
-                <button class="btn btn-outline" onclick="showPage('community')">
-                    <i class="fas fa-users"></i>
-                    Community
-                </button>
-                <button class="btn btn-outline" onclick="showPage('dev')">
-                    <i class="fas fa-code"></i>
-                    Dev
-                </button>
-                <button id="auth-button" class="btn btn-primary" onclick="showPage('auth')">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Sign In
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Notification Bar -->
-    <div id="notification-bar" class="notification-bar">
-        <div id="notification-content" class="notification-content">
-            <i id="notification-icon" class="fas fa-info-circle"></i>
-            <span id="notification-text"></span>
-        </div>
+  <header class="header">
+    <div class="header-content container">
+      <div class="logo" onclick="showPage('home')">
+        <i class="fas fa-graduation-cap"></i>
+        <div>AP Exam Center</div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="showPage('community')"><i class="fas fa-users"></i> Community</button>
+        <button class="btn btn-outline" onclick="showPage('dev')"><i class="fas fa-code"></i> Dev</button>
+        <button id="auth-button" class="btn btn-primary" onclick="showPage('auth')"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+      </div>
     </div>
+  </header>
 
-    <!-- Home Page -->
-    <div id="home-page" class="page active">
-        <div class="container">
-            <!-- Hero -->
-            <div class="hero">
-                <h1>Master Your AP Exams</h1>
-                <p>Comprehensive study resources, community notes, and AI-powered assistance</p>
-            </div>
+  <div id="notification-bar" class="notification-bar" aria-live="polite" style="display:none">
+    <div id="notification-content" class="notification-content"><i id="notification-icon" class="fas fa-info-circle"></i><div id="notification-text"></div></div>
+  </div>
 
-            <!-- Developer Controls -->
-            <div class="dev-controls">
-                <h3 class="mb-4">Developer Controls</h3>
-                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-                    <button class="btn btn-primary" onclick="toggleAddCourseForm()"><i class="fas fa-plus"></i> Add New Course</button>
-                    <button class="btn btn-outline" onclick="showPage('dev')"><i class="fas fa-cog"></i> Dev Dashboard</button>
-                    <button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Dev Mode</button>
-                </div>
+  <!-- HOME -->
+  <main id="home-page" class="page active">
+    <div class="container">
+      <section class="hero">
+        <h1>Master Your AP Exams</h1>
+        <p>Comprehensive study resources, community notes, and AI-powered assistance</p>
+      </section>
 
-                <div id="add-course-form" class="hidden">
-                    <div class="form-group">
-                        <label class="form-label">Course Title</label>
-                        <input type="text" id="new-course-title" class="form-input" placeholder="e.g., AP Calculus AB">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Emoji Icon</label>
-                        <input type="text" id="new-course-emoji" class="form-input" placeholder="📊" maxlength="2">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <input type="text" id="new-course-description" class="form-input" placeholder="Brief course description">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Notes (Markdown or HTML)</label>
-                        <textarea id="new-course-notes" class="form-textarea" placeholder="# Course Overview"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" onclick="saveNewCourse()"><i class="fas fa-save"></i> Save Course</button>
-                        <button class="btn btn-outline" onclick="toggleAddCourseForm()">Cancel</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Course Grid -->
-            <div id="course-grid" class="course-grid"></div>
+      <section class="dev-controls" id="dev-controls">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h3 style="margin:0">Developer Controls</h3>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="toggleAddCourseForm()"><i class="fas fa-plus"></i> Add Course</button>
+            <button class="btn btn-outline" onclick="showPage('dev')"><i class="fas fa-cog"></i> Dev Dashboard</button>
+            <button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Dev Mode</button>
+          </div>
         </div>
-    </div>
 
-    <!-- Course Detail Page -->
-    <div id="course-detail-page" class="page">
-        <div class="container">
-            <div class="course-detail">
-                <button class="btn btn-outline mb-4" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back to Courses</button>
-
-                <h1 id="course-detail-title" class="mb-4"></h1>
-
-                <!-- Notes Section -->
-                <div class="section">
-                    <h2 class="section-title"><i class="fas fa-book"></i> Course Notes</h2>
-
-                    <div id="notes-dropdowns" class="notes-content markdown-content"></div>
-
-                    <!-- Editor area (developer mode only) -->
-                    <div id="course-notes-editor-wrapper" class="notes-editor">
-                        <div class="editor-toolbar">
-                            <button class="btn btn-outline" onclick="formatSelection('bold')"><i class="fas fa-bold"></i> Bold</button>
-                            <button class="btn btn-outline" onclick="formatSelection('italic')"><i class="fas fa-italic"></i> Italic</button>
-                            <button class="btn btn-outline" onclick="insertBlock('h1')">H1</button>
-                            <button class="btn btn-outline" onclick="insertBlock('h2')">H2</button>
-                            <select id="font-size-select" onchange="setFontSize(this.value)">
-                                <option value="">Font size</option>
-                                <option value="14px">Small</option>
-                                <option value="18px">Normal</option>
-                                <option value="22px">Large</option>
-                            </select>
-                            <button class="btn btn-outline" onclick="insertDropdownSection()"><i class="fas fa-caret-square-down"></i> Insert Dropdown</button>
-                            <button class="btn btn-primary" onclick="saveCourseNotes()"><i class="fas fa-save"></i> Save Notes</button>
-                            <button class="btn btn-outline" onclick="toggleCourseEditor(false)">Cancel</button>
-                        </div>
-                        <div id="course-notes-editor" class="course-notes-editor" contenteditable="true" spellcheck="false"></div>
-                    </div>
-
-                    <div style="margin-top:1rem;">
-                        <button id="edit-notes-button" class="btn btn-outline" onclick="toggleCourseEditor(true)"><i class="fas fa-edit"></i> Edit Notes</button>
-                    </div>
-                </div>
-
-                <!-- Links Section -->
-                <div class="section">
-                    <h2 class="section-title"><i class="fas fa-link"></i> Useful Links</h2>
-                    <div id="links-grid" class="links-grid"></div>
-                    <button class="btn btn-primary" onclick="toggleAddLinkForm()"><i class="fas fa-plus"></i> Add Link</button>
-                    <div id="add-link-form" class="hidden mt-4">
-                        <div class="form-group"><label class="form-label">Link Title</label><input type="text" id="new-link-title" class="form-input"></div>
-                        <div class="form-group"><label class="form-label">URL</label><input type="url" id="new-link-url" class="form-input"></div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" onclick="saveNewLink()"><i class="fas fa-save"></i> Save Link</button>
-                            <button class="btn btn-outline" onclick="toggleAddLinkForm()">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Chat Section -->
-                <div class="section">
-                    <h2 class="section-title"><i class="fas fa-robot"></i> AI Study Assistant</h2>
-                    <div id="ai-integration-instructions" class="mb-4" style="background:#f8fafc;padding:1rem;border-radius:.5rem;border-left:4px solid var(--accent);">
-                        <h4><i class="fas fa-info-circle"></i> AI Integration Instructions</h4>
-                        <p>To connect a real AI chatbot, modify the <code>sendChatMessage()</code> function in the JavaScript section.</p>
-                    </div>
-                    <div id="chat-container" class="chat-container"></div>
-                </div>
-            </div>
+        <div id="add-course-form" class="hidden" style="margin-top:12px">
+          <div class="form-group"><label class="form-label">Course Title</label><input id="new-course-title" class="form-input" placeholder="AP Calculus AB"></div>
+          <div class="form-group" style="display:flex;gap:8px">
+            <div style="flex:0 0 110px"><label class="form-label">Emoji</label><input id="new-course-emoji" class="form-input" maxlength="2"></div>
+            <div style="flex:1"><label class="form-label">Description</label><input id="new-course-description" class="form-input"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Notes (Markdown or HTML)</label><textarea id="new-course-notes" class="form-textarea" placeholder="# Course Overview"></textarea></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="saveNewCourse()"><i class="fas fa-save"></i> Save</button>
+            <button class="btn btn-outline" onclick="toggleAddCourseForm()">Cancel</button>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- Community Page -->
-    <div id="community-page" class="page">
-        <div class="container">
-            <h1 class="mb-4"><i class="fas fa-users"></i> Community Notes</h1>
-
-            <div class="upload-card">
-                <h2 class="mb-4">Share Your Notes</h2>
-                <div class="form-group"><label class="form-label">Course</label><select id="upload-course-select" class="form-select"><option value="">Select a course</option></select></div>
-                <div class="form-group"><label class="form-label">Note Title</label><input type="text" id="upload-note-title" class="form-input"></div>
-                <div class="form-group"><label class="form-label">Note Content (Markdown or HTML)</label><textarea id="upload-note-content" class="form-textarea"></textarea></div>
-                <button class="btn btn-primary" onclick="uploadNote()"><i class="fas fa-upload"></i> Share Note</button>
-                <div id="upload-guest-message" class="hidden mt-2" style="color:var(--gray);"><i class="fas fa-lock"></i> Please sign in to share notes</div>
-            </div>
-
-            <div class="filter-container">
-                <h3 class="mb-4">Filter Notes</h3>
-                <div class="filter-row">
-                    <div class="filter-group"><label class="filter-label">Course</label><select id="filter-course" class="form-select" onchange="applyFilters()"><option value="">All Courses</option></select></div>
-                    <div class="filter-group"><label class="filter-label">Minimum Rating</label><select id="filter-rating" class="form-select" onchange="applyFilters()"><option value="">Any Rating</option><option value="5">5 Stars</option><option value="4">4+ Stars</option><option value="3">3+ Stars</option><option value="2">2+ Stars</option><option value="1">1+ Stars</option></select></div>
-                    <div class="filter-group"><label class="filter-label">Sort By</label><select id="filter-sort" class="form-select" onchange="applyFilters()"><option value="rating">Rating (High to Low)</option><option value="newest">Newest First</option><option value="oldest">Oldest First</option></select></div>
-                </div>
-            </div>
-
-            <div id="community-notes-list"></div>
+      <section>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h2 style="margin:0">Courses</h2>
         </div>
+        <div id="course-grid" class="course-grid" aria-live="polite"></div>
+      </section>
     </div>
+  </main>
 
-    <!-- Note View Page -->
-    <div id="note-view-page" class="page">
-        <div class="container">
-            <button class="btn btn-outline mb-4" onclick="showPage('community')"><i class="fas fa-arrow-left"></i> Back to Community</button>
-            <div class="note-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h1 id="view-note-title" style="margin-right:1rem;"></h1>
-                    <div>
-                        <button id="edit-community-note-button" class="btn btn-outline" onclick="toggleCommunityEditor(true)"><i class="fas fa-edit"></i> Edit</button>
-                        <button id="delete-community-note-button" class="note-delete btn btn-danger" style="display:none;" onclick="deleteCommunityNote(window.currentNote?.id)"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                </div>
-
-                <div id="view-note-meta" class="note-meta"></div>
-
-                <!-- Rating Display -->
-                <div id="view-note-rating" class="rating-display mb-4">
-                    <div class="rating-stars" id="view-rating-stars"></div>
-                    <span id="view-rating-text"></span>
-                </div>
-
-                <!-- User Rating -->
-                <div id="user-rating-section" class="rating-container mb-4 hidden">
-                    <label class="form-label">Rate these notes:</label>
-                    <div class="rating-stars" id="user-rating-stars"></div>
-                    <div style="font-size:.9rem;color:var(--gray);margin-left:.5rem;">Click a star to submit</div>
-                </div>
-
-                <div id="view-note-content" class="markdown-content"></div>
-
-                <!-- Community note editor (author + dev) -->
-                <div id="community-note-editor-wrapper" class="notes-editor hidden" style="margin-top:1rem;">
-                    <div class="editor-toolbar">
-                        <button class="btn btn-outline" onclick="communityFormat('bold')"><i class="fas fa-bold"></i> Bold</button>
-                        <button class="btn btn-outline" onclick="communityFormat('italic')"><i class="fas fa-italic"></i> Italic</button>
-                        <button class="btn btn-outline" onclick="communityInsertBlock('h1')">H1</button>
-                        <button class="btn btn-outline" onclick="communityInsertBlock('h2')">H2</button>
-                        <select id="community-font-size-select" onchange="communitySetFontSize(this.value)">
-                            <option value="">Font size</option>
-                            <option value="14px">Small</option>
-                            <option value="18px">Normal</option>
-                            <option value="22px">Large</option>
-                        </select>
-                        <button class="btn btn-outline" onclick="communityInsertDropdown()"><i class="fas fa-caret-square-down"></i> Insert Dropdown</button>
-                        <button class="btn btn-primary" onclick="saveCommunityNoteEdits()"><i class="fas fa-save"></i> Save</button>
-                        <button class="btn btn-outline" onclick="toggleCommunityEditor(false)"><i class="fas fa-times"></i> Cancel</button>
-                    </div>
-                    <div id="community-note-editor" class="community-note-editor" contenteditable="true" spellcheck="false"></div>
-                </div>
-            </div>
+  <!-- COURSE DETAIL -->
+  <section id="course-detail-page" class="page">
+    <div class="container">
+      <div class="course-detail">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <button class="btn btn-outline" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back</button>
+          <div style="display:flex;gap:10px">
+            <button id="edit-notes-button" class="btn btn-outline" onclick="toggleCourseEditor(true)"><i class="fas fa-edit"></i> Edit Notes</button>
+          </div>
         </div>
-    </div>
 
-    <!-- Developer Dashboard -->
-    <div id="dev-page" class="page">
-        <div class="container">
-            <h1 class="mb-4"><i class="fas fa-code"></i> Developer Dashboard</h1>
+        <h1 id="course-detail-title" style="margin-top:12px"></h1>
 
-            <div id="dev-password-section" class="auth-container mb-4">
-                <h2 class="mb-4">Developer Access</h2>
-                <div class="form-group"><label class="form-label">Password</label><input type="password" id="dev-password" class="form-input" placeholder="Enter developer password"></div>
-                <button class="btn btn-primary" onclick="enableDeveloperMode()"><i class="fas fa-unlock"></i> Enable Developer Mode</button>
+        <div class="section">
+          <h3>Course Notes</h3>
+          <div id="notes-dropdowns" class="notes-content markdown-content" style="margin-top:10px"></div>
+
+          <div id="course-notes-editor-wrapper" class="notes-editor hidden" style="margin-top:12px">
+            <div class="editor-toolbar">
+              <button class="btn btn-outline" onclick="formatSelection('bold')"><i class="fas fa-bold"></i></button>
+              <button class="btn btn-outline" onclick="formatSelection('italic')"><i class="fas fa-italic"></i></button>
+              <button class="btn btn-outline" onclick="insertBlock('h1')">H1</button>
+              <button class="btn btn-outline" onclick="insertBlock('h2')">H2</button>
+              <select id="font-size-select" onchange="setFontSize(this.value)">
+                <option value="">Font</option><option value="14px">S</option><option value="18px">M</option><option value="22px">L</option>
+              </select>
+              <button class="btn btn-outline" onclick="insertDropdownSection()"><i class="fas fa-caret-square-down"></i></button>
+              <button class="btn btn-primary" onclick="saveCourseNotes()"><i class="fas fa-save"></i> Save</button>
+              <button class="btn btn-outline" onclick="toggleCourseEditor(false)">Cancel</button>
             </div>
-
-            <div id="dev-content" class="hidden">
-                <div class="mb-4"><button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Developer Mode</button></div>
-
-                <div class="stats-grid">
-                    <div class="stat-card"><div id="total-users" class="stat-number">0</div><div class="stat-label">Total Users</div></div>
-                    <div class="stat-card"><div id="guest-users" class="stat-number">0</div><div class="stat-label">Guest Users</div></div>
-                    <div class="stat-card"><div id="total-notes" class="stat-number">0</div><div class="stat-label">Community Notes</div></div>
-                    <div class="stat-card"><div id="avg-session" class="stat-number">0m</div><div class="stat-label">Avg Session Time</div></div>
-                </div>
-
-                <div class="mb-4">
-                    <h2 class="mb-4">Registered Users</h2>
-                    <div class="table-container">
-                        <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Registration Date</th></tr></thead><tbody id="users-table-body"></tbody></table>
-                    </div>
-                </div>
-
-                <div>
-                    <h2 class="mb-4">Recent Activity</h2>
-                    <div class="table-container">
-                        <table class="table"><thead><tr><th>Event</th><th>User</th><th>Timestamp</th></tr></thead><tbody id="activity-table-body"></tbody></table>
-                    </div>
-                </div>
-            </div>
+            <div id="course-notes-editor" class="course-notes-editor" contenteditable="true"></div>
+          </div>
         </div>
-    </div>
 
-    <!-- Auth Page -->
-    <div id="auth-page" class="page">
-        <div class="container">
-            <div class="auth-container">
-                <h1 id="auth-title" class="mb-4">Sign In</h1>
-                <form id="auth-form" onsubmit="handleAuth(event)">
-                    <div id="name-field" class="form-group hidden"><label class="form-label">Name</label><input type="text" id="auth-name" class="form-input" placeholder="Your name"></div>
-                    <div class="form-group"><label class="form-label">Email</label><input type="email" id="auth-email" class="form-input" required></div>
-                    <div class="form-group"><label class="form-label">Password</label><input type="password" id="auth-password" class="form-input" required></div>
-                    <button type="submit" class="btn btn-primary w-full"><i class="fas fa-sign-in-alt"></i> <span id="auth-submit-text">Sign In</span></button>
-                </form>
-                <div class="auth-toggle" onclick="toggleAuthMode()"><span id="auth-toggle-text">Don't have an account? Sign Up</span></div>
+        <div class="section">
+          <h3>Useful Links</h3>
+          <div id="links-grid" class="links-grid"></div>
+          <div style="margin-top:10px">
+            <button class="btn btn-primary" onclick="toggleAddLinkForm()"><i class="fas fa-plus"></i> Add Link</button>
+            <div id="add-link-form" class="hidden" style="margin-top:12px">
+              <div class="form-group"><label class="form-label">Title</label><input id="new-link-title" class="form-input"></div>
+              <div class="form-group"><label class="form-label">URL</label><input id="new-link-url" class="form-input"></div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-primary" onclick="saveNewLink()"><i class="fas fa-save"></i> Save</button>
+                <button class="btn btn-outline" onclick="toggleAddLinkForm()">Cancel</button>
+              </div>
             </div>
+          </div>
         </div>
+
+        <div class="section">
+          <h3>AI Study Assistant</h3>
+          <!-- Removed inline AI integration instructions per request -->
+          <div id="chat-container" class="notes-content" style="min-height:140px;margin-top:10px"></div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <script>
-        // Global State
-        window.appData = {
-            courses: [],
-            users: [],
-            communityNotes: [],
-            analytics: { totalUsers: 0, guestUsers: 0, registeredUsers: 0, sessions: [] },
-        };
-        window.currentUser = null;
-        window.currentCourse = null;
-        window.currentNote = null;
-        window.isSignUpMode = false;
-        window.developerModeEnabled = false;
-        window.userRating = 0;
+  <!-- COMMUNITY -->
+  <section id="community-page" class="page">
+    <div class="container">
+      <h1 style="margin-bottom:12px"><i class="fas fa-users"></i> Community Notes</h1>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadData();
-            initializeDefaultData();
-            updateUI();
-            renderCourseGrid();
-            showPage('home');
-            trackEvent('page_view', { page: 'home' });
-        });
+      <div class="note-card upload-card" style="margin-bottom:16px">
+        <h3 style="margin-bottom:8px">Share Your Notes</h3>
+        <div class="form-group"><label class="form-label">Course</label><select id="upload-course-select" class="form-select"></select></div>
+        <div class="form-group"><label class="form-label">Note Title</label><input id="upload-note-title" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Note Content (Markdown or HTML)</label><textarea id="upload-note-content" class="form-textarea" placeholder="# Unit 1: ..."></textarea></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary" onclick="uploadNote()"><i class="fas fa-upload"></i> Share Note</button>
+          <div id="upload-guest-message" class="form-label" style="color:var(--muted);align-self:center;display:none"><i class="fas fa-lock"></i> Sign in to share</div>
+        </div>
+      </div>
 
-        // Persistence
-        function loadData() {
-            const saved = localStorage.getItem('apExamAppData');
-            if (saved) {
-                try { window.appData = JSON.parse(saved); } catch(e) {}
-            }
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                try { window.currentUser = JSON.parse(savedUser); } catch(e) {}
-            }
-        }
-        function saveData() {
-            localStorage.setItem('apExamAppData', JSON.stringify(window.appData));
-            if (window.currentUser) localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
-            else localStorage.removeItem('currentUser');
-        }
+      <div class="section filter-container">
+        <h3 style="margin-bottom:8px">Filter Notes</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <div style="flex:1"><label class="form-label">Course</label><select id="filter-course" class="form-select" onchange="applyFilters()"><option value="">All Courses</option></select></div>
+          <div style="width:160px"><label class="form-label">Minimum Rating</label><select id="filter-rating" class="form-select" onchange="applyFilters()"><option value="">Any</option><option value="5">5</option><option value="4">4+</option><option value="3">3+</option><option value="2">2+</option><option value="1">1+</option></select></div>
+          <div style="width:180px"><label class="form-label">Sort By</label><select id="filter-sort" class="form-select" onchange="applyFilters()"><option value="rating">Rating</option><option value="newest">Newest</option><option value="oldest">Oldest</option></select></div>
+        </div>
+      </div>
 
-        // Default data
-        function initializeDefaultData() {
-            if (!window.appData.courses || window.appData.courses.length === 0) {
-                window.appData.courses = [
-                    {
-                        id: 1,
-                        title: 'AP Calculus AB',
-                        icon: '📊',
-                        description: 'Master differential and integral calculus concepts',
-                        notes: '# AP Calculus AB Overview\n\n## Key Concepts\n- Limits and Continuity\n- Derivatives and Applications\n- Integrals and Applications\n- Differential Equations\n\n## Study Tips\n1. Practice derivative rules daily\n2. Understand the relationship between derivatives and integrals\n3. Work through past exam questions',
-                        links: [
-                            { title: 'Official AP Calculus AB Course', url: 'https://apstudents.collegeboard.org/courses/ap-calculus-ab' },
-                            { title: 'Khan Academy Calculus', url: 'https://www.khanacademy.org/math/ap-calculus-ab' }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        title: 'AP Physics 1',
-                        icon: '⚡',
-                        description: 'Explore mechanics, waves, and basic physics principles',
-                        notes: '# AP Physics 1 Overview\n\n## Major Topics\n- Kinematics\n- Dynamics\n- Circular Motion and Gravitation\n- Energy and Momentum\n- Simple Harmonic Motion\n- Waves and Sound\n\n## Problem-Solving Strategy\n1. Draw clear diagrams\n2. Identify knowns and unknowns\n3. Choose appropriate equations\n4. Check units and reasonableness',
-                        links: [
-                            { title: 'AP Physics 1 Course Description', url: 'https://apstudents.collegeboard.org/courses/ap-physics-1' }
-                        ]
-                    },
-                    {
-                        id: 3,
-                        title: 'AP Chemistry',
-                        icon: '🧪',
-                        description: 'Understand chemical principles and laboratory practices',
-                        notes: '# AP Chemistry Overview\n\n## Core Topics\n- Atomic Structure and Properties\n- Molecular and Ionic Compound Structure\n- Intermolecular Forces and Properties\n- Chemical Reactions\n- Kinetics and Thermodynamics\n- Equilibrium and Acids/Bases\n\n## Lab Skills\n- Proper measurement techniques\n- Data analysis and interpretation\n- Safety protocols',
-                        links: []
-                    }
-                ];
-                saveData();
-            }
-            if (!window.appData.communityNotes) window.appData.communityNotes = [];
-            if (!window.appData.users) window.appData.users = [];
-        }
+      <div id="community-notes-list" aria-live="polite" style="margin-top:12px"></div>
+    </div>
+  </section>
 
-        // Navigation
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const pageEl = document.getElementById(pageId + '-page');
-            if (pageEl) pageEl.classList.add('active');
-            updatePageContent(pageId);
-            trackEvent('page_view', { page: pageId });
-        }
+  <!-- NOTE VIEW -->
+  <section id="note-view-page" class="page">
+    <div class="container">
+      <div class="note-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+          <div>
+            <button class="btn btn-outline" onclick="showPage('community')"><i class="fas fa-arrow-left"></i> Back</button>
+            <h1 id="view-note-title" style="display:inline-block;margin-left:12px"></h1>
+            <div id="view-note-meta" class="note-meta" style="margin-top:6px"></div>
+          </div>
 
-        function updatePageContent(pageId) {
-            switch(pageId) {
-                case 'home':
-                    renderCourseGrid();
-                    updateDeveloperMode();
-                    break;
-                case 'course-detail':
-                    renderCourseDetail();
-                    break;
-                case 'community':
-                    renderCommunityPage();
-                    break;
-                case 'dev':
-                    renderDevDashboard();
-                    break;
-                case 'auth':
-                    updateAuthUI();
-                    break;
-                case 'note-view':
-                    renderNoteView();
-                    break;
-            }
-        }
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="edit-community-note-button" class="btn btn-outline" onclick="toggleCommunityEditor(true)" style="display:none"><i class="fas fa-edit"></i> Edit</button>
+            <button id="delete-community-note-button" class="note-delete btn btn-danger" style="display:none" onclick="deleteCommunityNote(window.currentNote?.id)"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
 
-        // Course Grid
-        function renderCourseGrid() {
-            const grid = document.getElementById('course-grid');
-            grid.innerHTML = '';
-            (window.appData.courses || []).forEach(course => {
-                const card = document.createElement('div');
-                card.className = 'course-card';
-                card.onclick = () => openCourse(course.id);
+        <div style="margin-top:12px" id="view-note-rating" class="rating-display">
+          <div class="rating-stars" id="view-rating-stars"></div>
+          <span id="view-rating-text" style="margin-left:8px;color:var(--muted)"></span>
+        </div>
 
-                card.innerHTML = `
-                    <button class="delete-course" title="Delete course" onclick="event.stopPropagation(); deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
-                    <button class="edit-course" title="Edit notes" onclick="event.stopPropagation(); editCourse(${course.id})"><i class="fas fa-edit"></i></button>
-                    <div class="course-emoji">${course.icon || ''}</div>
-                    <div class="course-title">${escapeHtml(course.title)}</div>
-                    <div class="course-description">${escapeHtml(course.description)}</div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+        <div id="user-rating-section" class="rating-container" style="margin-top:12px;display:none">
+          <label class="form-label" style="min-width:110px">Rate these notes</label>
+          <div class="rating-stars" id="user-rating-stars"></div>
+          <div style="color:var(--muted);font-size:13px;margin-left:8px">Click a star to submit</div>
+        </div>
 
-        function openCourse(courseId) {
-            window.currentCourse = window.appData.courses.find(c => c.id === courseId);
-            if (!window.currentCourse) return;
-            showPage('course-detail');
-        }
+        <div id="view-note-content" class="markdown-content" style="margin-top:12px"></div>
 
-        function editCourse(courseId) {
-            openCourse(courseId);
-            // wait for page render then open editor
-            setTimeout(() => {
-                if (!window.developerModeEnabled) {
-                    showNotification('Enable developer mode to edit notes', 'error');
-                    showPage('dev');
-                    return;
-                }
-                toggleCourseEditor(true);
-            }, 100);
-        }
+        <div id="community-note-editor-wrapper" class="notes-editor hidden" style="margin-top:12px">
+          <div class="editor-toolbar">
+            <button class="btn btn-outline" onclick="communityFormat('bold')"><i class="fas fa-bold"></i></button>
+            <button class="btn btn-outline" onclick="communityFormat('italic')"><i class="fas fa-italic"></i></button>
+            <button class="btn btn-outline" onclick="communityInsertBlock('h1')">H1</button>
+            <button class="btn btn-outline" onclick="communityInsertBlock('h2')">H2</button>
+            <select id="community-font-size-select" onchange="communitySetFontSize(this.value)">
+              <option value="">Font</option><option value="14px">S</option><option value="18px">M</option><option value="22px">L</option>
+            </select>
+            <button class="btn btn-outline" onclick="communityInsertDropdown()"><i class="fas fa-caret-square-down"></i></button>
+            <button class="btn btn-primary" onclick="saveCommunityNoteEdits()"><i class="fas fa-save"></i> Save</button>
+            <button class="btn btn-outline" onclick="toggleCommunityEditor(false)"><i class="fas fa-times"></i> Cancel</button>
+          </div>
+          <div id="community-note-editor" class="community-note-editor" contenteditable="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        function deleteCourse(courseId) {
-            if (!confirm('Are you sure you want to delete this course?')) return;
-            window.appData.courses = window.appData.courses.filter(c => c.id !== courseId);
-            saveData();
-            renderCourseGrid();
-            showNotification('Course deleted successfully', 'success');
-            trackEvent('course_deleted', { courseId });
-        }
+  <!-- DEV DASHBOARD -->
+  <section id="dev-page" class="page">
+    <div class="container">
+      <h1 style="margin-bottom:12px"><i class="fas fa-code"></i> Developer Dashboard</h1>
 
-        // Developer Mode
-        function toggleAddCourseForm() {
-            document.getElementById('add-course-form').classList.toggle('hidden');
-        }
-        function saveNewCourse() {
-            const title = document.getElementById('new-course-title').value.trim();
-            const emoji = document.getElementById('new-course-emoji').value.trim();
-            const description = document.getElementById('new-course-description').value.trim();
-            const notes = document.getElementById('new-course-notes').value.trim();
+      <div id="dev-password-section" class="auth-container" style="background:white;padding:18px;border-radius:12px;box-shadow:var(--card-shadow);margin-bottom:12px">
+        <h3 style="margin-bottom:8px">Developer Access</h3>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input id="dev-password" class="form-input" type="password" placeholder="Developer password">
+          <button class="btn btn-primary" onclick="enableDeveloperMode()"><i class="fas fa-unlock"></i> Enable Dev Mode</button>
+        </div>
+      </div>
 
-            if (!title || !emoji || !description) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
-            }
+      <div id="dev-content" class="hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="stats-grid" style="display:inline-grid;grid-auto-flow:column;gap:12px">
+              <div class="stat-card"><div id="total-users" class="stat-number">0</div><div class="stat-label">Total Users</div></div>
+              <div class="stat-card"><div id="guest-users" class="stat-number">0</div><div class="stat-label">Guest Users</div></div>
+              <div class="stat-card"><div id="total-notes" class="stat-number">0</div><div class="stat-label">Community Notes</div></div>
+            </div>
+          </div>
 
-            const newCourse = { id: Date.now(), title, icon: emoji, description, notes: notes || '<p>No notes yet</p>', links: [] };
-            window.appData.courses.push(newCourse);
-            saveData();
-            renderCourseGrid();
-            toggleAddCourseForm();
-            document.getElementById('new-course-title').value = '';
-            document.getElementById('new-course-emoji').value = '';
-            document.getElementById('new-course-description').value = '';
-            document.getElementById('new-course-notes').value = '';
-            showNotification('Course added successfully', 'success');
-            trackEvent('course_added', { courseId: newCourse.id });
-        }
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn btn-danger" onclick="exitDeveloperMode()"><i class="fas fa-sign-out-alt"></i> Exit Dev Mode</button>
+          </div>
+        </div>
 
-        function updateDeveloperMode() {
-            if (window.developerModeEnabled) document.body.classList.add('developer-mode');
-            else document.body.classList.remove('developer-mode');
-        }
-        function exitDeveloperMode() {
-            window.developerModeEnabled = false;
-            updateDeveloperMode();
-            showPage('home');
-            showNotification('Exited developer mode', 'info');
-        }
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div style="flex:1">
+            <div class="dev-search-row">
+              <input id="dev-course-search" class="form-input dev-search-input" placeholder="Search classes by name..." oninput="searchCoursesInDev()" />
+            </div>
+            <div id="dev-course-search-results" class="dev-search-results" aria-live="polite"></div>
 
-        // Course Detail & Notes Editor
-        function renderCourseDetail() {
-            if (!window.currentCourse) return;
-            document.getElementById('course-detail-title').textContent = window.currentCourse.title;
+            <div style="margin-top:16px">
+              <h3 style="margin-bottom:8px">Registered Users</h3>
+              <div class="table-container">
+                <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Registered</th></tr></thead><tbody id="users-table-body"></tbody></table>
+              </div>
+            </div>
+          </div>
 
-            // Render notes (if notes are HTML (contain '<' and '>'), render as HTML; otherwise parse markdown)
-            renderCourseNotes();
+          <div style="width:420px">
+            <h3 style="margin-bottom:8px">Recent Activity</h3>
+            <div class="table-container" style="max-height:420px;overflow:auto">
+              <table class="table"><thead><tr><th>Event</th><th>User</th><th>When</th></tr></thead><tbody id="activity-table-body"></tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            renderLinks();
-            initializeChat();
+  <!-- AUTH -->
+  <section id="auth-page" class="page">
+    <div class="container">
+      <div style="max-width:480px;margin:0 auto;background:white;padding:20px;border-radius:12px;box-shadow:var(--card-shadow)">
+        <h2 id="auth-title">Sign In</h2>
+        <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top:12px">
+          <div id="name-field" class="form-group hidden"><label class="form-label">Name</label><input id="auth-name" class="form-input"></div>
+          <div class="form-group"><label class="form-label">Email</label><input id="auth-email" class="form-input" type="email" required></div>
+          <div class="form-group"><label class="form-label">Password</label><input id="auth-password" class="form-input" type="password" required></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-primary" type="submit"><i class="fas fa-sign-in-alt"></i> <span id="auth-submit-text">Sign In</span></button>
+            <button type="button" class="btn btn-outline" onclick="toggleAuthMode()"><span id="auth-toggle-text">Sign Up</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
-            // show editor toggle state
-            const editorWrapper = document.getElementById('course-notes-editor-wrapper');
-            if (editorWrapper) editorWrapper.classList.remove('active');
-            document.getElementById('course-notes-editor-wrapper').classList.add('hidden');
-            document.getElementById('edit-notes-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
-        }
+  <script>
+    // GLOBAL STATE
+    window.appData = { courses: [], users: [], communityNotes: [], analytics: { totalUsers:0, guestUsers:0, registeredUsers:0, sessions:[] } };
+    window.currentUser = null;
+    window.currentCourse = null;
+    window.currentNote = null;
+    window.isSignUpMode = false;
+    window.developerModeEnabled = false;
+    window.userRating = 0;
 
-        function renderCourseNotes() {
-            const el = document.getElementById('notes-dropdowns');
-            const raw = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
-            if (containsHTML(raw)) {
-                el.innerHTML = raw;
-            } else {
-                el.innerHTML = parseMarkdown(raw);
-            }
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      initializeDefaultData();
+      updateUI();
+      renderCourseGrid();
+      showPage('home');
+      trackEvent('page_view',{page:'home'});
+    });
 
-        function toggleCourseEditor(open) {
-            if (!window.developerModeEnabled) {
-                showNotification('Enable developer mode to edit notes', 'error');
-                return;
-            }
-            const wrapper = document.getElementById('course-notes-editor-wrapper');
-            const viewer = document.getElementById('notes-dropdowns');
-            const editBtn = document.getElementById('edit-notes-button');
+    // Persistence
+    function loadData(){
+      const saved = localStorage.getItem('apExamAppData');
+      if(saved){ try{ window.appData = JSON.parse(saved); }catch(e){} }
+      const su = localStorage.getItem('currentUser'); if(su){ try{ window.currentUser = JSON.parse(su); }catch(e){} }
+    }
+    function saveData(){ localStorage.setItem('apExamAppData', JSON.stringify(window.appData)); if(window.currentUser) localStorage.setItem('currentUser', JSON.stringify(window.currentUser)); else localStorage.removeItem('currentUser'); }
 
-            if (open) {
-                // populate editor with HTML version of notes
-                let content = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
-                if (!containsHTML(content)) content = parseMarkdown(content);
-                document.getElementById('course-notes-editor').innerHTML = content;
-                wrapper.classList.remove('hidden');
-                wrapper.classList.add('active');
-                viewer.classList.add('hidden');
-                editBtn.classList.add('hidden');
-                // focus the editor
-                setTimeout(() => { document.getElementById('course-notes-editor').focus(); }, 50);
-            } else {
-                wrapper.classList.remove('active');
-                wrapper.classList.add('hidden');
-                viewer.classList.remove('hidden');
-                editBtn.classList.remove('hidden');
-            }
-        }
+    // Default
+    function initializeDefaultData(){
+      if(!window.appData.courses || window.appData.courses.length===0){
+        window.appData.courses = [
+          { id:1, title:'AP Calculus AB', icon:'📊', description:'Master differential and integral calculus', notes:'# AP Calculus AB\n\n## Key Concepts\n- Limits\n- Derivatives\n\n', links: [{title:'CollegeBoard', url:'https://apstudents.collegeboard.org'}] },
+          { id:2, title:'AP Physics 1', icon:'⚡', description:'Mechanics & waves', notes:'# AP Physics 1\n\n## Topics\n- Kinematics\n- Dynamics', links: [] },
+          { id:3, title:'AP Chemistry', icon:'🧪', description:'Chemistry principles', notes:'# AP Chemistry\n\n...', links: [] }
+        ];
+        saveData();
+      }
+      if(!window.appData.communityNotes) window.appData.communityNotes = [];
+      if(!window.appData.users) window.appData.users = [];
+    }
 
-        function saveCourseNotes() {
-            if (!window.currentCourse) return;
-            const html = document.getElementById('course-notes-editor').innerHTML;
-            // Save as HTML so editing preserves formatting
-            window.currentCourse.notes = html;
-            // update course in main list
-            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
-            saveData();
-            toggleCourseEditor(false);
-            renderCourseNotes();
-            showNotification('Notes saved', 'success');
-            trackEvent('course_notes_saved', { courseId: window.currentCourse.id });
-        }
+    // NAV
+    function showPage(pageId){
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      const el = document.getElementById(pageId+'-page');
+      if(el) el.classList.add('active');
+      updatePageContent(pageId);
+      trackEvent('page_view',{page:pageId});
+    }
+    function updatePageContent(pageId){
+      switch(pageId){
+        case 'home': renderCourseGrid(); updateDeveloperMode(); break;
+        case 'course-detail': renderCourseDetail(); break;
+        case 'community': renderCommunityPage(); break;
+        case 'dev': renderDevDashboard(); break;
+        case 'auth': updateAuthUI(); break;
+        case 'note-view': /* handled in viewNote */ break;
+      }
+    }
 
-        // Toolbar commands
-        function formatSelection(cmd) {
-            // support simple commands
-            if (cmd === 'bold') document.execCommand('bold', false, null);
-            if (cmd === 'italic') document.execCommand('italic', false, null);
-        }
-        function insertBlock(tag) {
-            const selection = window.getSelection();
-            if (!selection || selection.rangeCount === 0) {
-                // insert at end
-                const editor = document.getElementById('course-notes-editor');
-                editor.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`);
-                return;
-            }
-            const range = selection.getRangeAt(0);
-            const content = range.extractContents();
-            const container = document.createElement(tag);
-            container.appendChild(content);
-            range.insertNode(container);
-            // collapse after inserted block
-            range.collapse(false);
-        }
-        function setFontSize(size) {
-            if (!size) return;
-            // wrap selection in span with style
-            const selection = window.getSelection();
-            if (!selection || selection.isCollapsed) return;
-            const range = selection.getRangeAt(0);
-            const span = document.createElement('span');
-            span.style.fontSize = size;
-            span.appendChild(range.extractContents());
-            range.insertNode(span);
-        }
-        function insertDropdownSection() {
-            const editor = document.getElementById('course-notes-editor');
-            const dropdownHtml = `<details><summary>New Section</summary><div style="padding: .5rem 0;">Detailed content here...</div></details><br/>`;
-            // insert at cursor if possible
-            const selection = window.getSelection();
-            if (selection && selection.rangeCount) {
-                const range = selection.getRangeAt(0);
-                const node = document.createElement('div');
-                node.innerHTML = dropdownHtml;
-                const frag = document.createDocumentFragment();
-                while (node.firstChild) frag.appendChild(node.firstChild);
-                range.insertNode(frag);
-            } else {
-                editor.insertAdjacentHTML('beforeend', dropdownHtml);
-            }
-        }
+    // UI helpers
+    function showNotification(msg,type='info'){
+      const bar = document.getElementById('notification-bar');
+      const content = document.getElementById('notification-content');
+      const icon = document.getElementById('notification-icon');
+      const text = document.getElementById('notification-text');
+      text.textContent = msg;
+      content.className = 'notification-content';
+      if(type==='success') content.classList.add('notification-success');
+      if(type==='error') content.classList.add('notification-error');
+      bar.style.display = 'flex';
+      setTimeout(()=>{ bar.style.display = 'none'; }, 2600);
+    }
 
-        // Links
-        function renderLinks() {
-            const linksGrid = document.getElementById('links-grid');
-            linksGrid.innerHTML = '';
-            if (!window.currentCourse || !window.currentCourse.links) return;
-            window.currentCourse.links.forEach((link, idx) => {
-                const card = document.createElement('div');
-                card.className = 'link-card';
-                card.innerHTML = `
-                    <div>
-                        <div class="link-title">${escapeHtml(link.title)}</div>
-                        <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); font-size:.875rem;">
-                            <i class="fas fa-external-link-alt"></i> ${escapeHtml(link.url)}
-                        </a>
-                    </div>
-                    <button class="delete-link" onclick="deleteLink(${idx})"><i class="fas fa-trash"></i></button>
-                `;
-                linksGrid.appendChild(card);
-            });
-        }
-        function toggleAddLinkForm() { document.getElementById('add-link-form').classList.toggle('hidden'); }
-        function saveNewLink() {
-            const title = document.getElementById('new-link-title').value.trim();
-            const url = document.getElementById('new-link-url').value.trim();
-            if (!title || !url) { showNotification('Please fill in all fields', 'error'); return; }
-            if (!isValidUrl(url)) { showNotification('Please enter a valid URL', 'error'); return; }
-            if (!window.currentCourse.links) window.currentCourse.links = [];
-            window.currentCourse.links.push({ title, url });
-            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
-            saveData();
-            renderLinks();
-            toggleAddLinkForm();
-            document.getElementById('new-link-title').value = '';
-            document.getElementById('new-link-url').value = '';
-            showNotification('Link added successfully', 'success');
-        }
-        function deleteLink(index) {
-            if (!window.currentCourse) return;
-            window.currentCourse.links.splice(index, 1);
-            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
-            saveData();
-            renderLinks();
-            showNotification('Link deleted successfully', 'success');
-        }
+    // COURSES
+    function renderCourseGrid(){
+      const grid = document.getElementById('course-grid');
+      grid.innerHTML = '';
+      (window.appData.courses || []).forEach(course=>{
+        const card = document.createElement('div');
+        card.className = 'course-card';
+        card.onclick = ()=>openCourse(course.id);
 
-        // Chat (same as before)
-        function initializeChat() {
-            const chatContainer = document.getElementById('chat-container');
-            if (!window.currentUser) {
-                chatContainer.innerHTML = `<div class="chat-locked"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:1rem;"></i><p>Please sign in to use the AI study assistant</p><button class="btn btn-primary" onclick="showPage('auth')"><i class="fas fa-sign-in-alt"></i> Sign In</button></div>`;
-                return;
-            }
-            chatContainer.innerHTML = `<div class="chat-messages" id="chat-messages"></div><div class="chat-input-container"><input type="text" id="chat-input" class="chat-input" placeholder="Ask me anything about ${escapeHtml(window.currentCourse.title)}..." onkeypress="handleChatKeyPress(event)"><button class="btn btn-primary" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i> Send</button></div>`;
-            addChatMessage('bot', `Hello! I'm your AI study assistant for ${escapeHtml(window.currentCourse.title)}. How can I help you today?`);
-        }
-        function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
-        function sendChatMessage() {
-            const input = document.getElementById('chat-input');
-            if (!input) return;
-            const message = input.value.trim();
-            if (!message) return;
-            addChatMessage('user', message);
-            input.value = '';
-            setTimeout(() => {
-                const responses = ["That's an excellent question!","Here's a helpful explanation.","Let me break it down for you."];
-                addChatMessage('bot', responses[Math.floor(Math.random()*responses.length)]);
-            }, 900);
-        }
-        function addChatMessage(sender, message) {
-            const container = document.getElementById('chat-messages');
-            if (!container) return;
-            const div = document.createElement('div');
-            div.className = `message ${sender}`;
-            const icon = sender === 'user' ? 'fas fa-user' : 'fas fa-robot';
-            div.innerHTML = `<i class="${icon}"></i> ${escapeHtml(message)}`;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
+        card.innerHTML = `
+          <button class="delete-course" title="Delete course" onclick="event.stopPropagation(); deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
+          <button class="edit-course" title="Edit notes" onclick="event.stopPropagation(); editCourse(${course.id})"><i class="fas fa-edit"></i></button>
+          <div class="course-emoji">${course.icon||''}</div>
+          <div class="course-title">${escapeHtml(course.title)}</div>
+          <div class="course-description">${escapeHtml(course.description)}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-        // Community & Notes + Rating
-        function renderCommunityPage() {
-            const uploadSelect = document.getElementById('upload-course-select');
-            const filterSelect = document.getElementById('filter-course');
-            uploadSelect.innerHTML = '<option value="">Select a course</option>';
-            filterSelect.innerHTML = '<option value="">All Courses</option>';
-            (window.appData.courses || []).forEach(course => {
-                const o1 = document.createElement('option'); o1.value = course.id; o1.textContent = course.title; uploadSelect.appendChild(o1);
-                const o2 = document.createElement('option'); o2.value = course.id; o2.textContent = course.title; filterSelect.appendChild(o2);
-            });
-            const guestMessage = document.getElementById('upload-guest-message');
-            if (window.currentUser) guestMessage.classList.add('hidden'); else guestMessage.classList.remove('hidden');
-            applyFilters();
-        }
+    function openCourse(courseId){ window.currentCourse = window.appData.courses.find(c=>c.id===courseId); if(window.currentCourse) showPage('course-detail'); }
+    function editCourse(courseId){ openCourse(courseId); setTimeout(()=>{ if(!window.developerModeEnabled){ showNotification('Enable dev mode to edit','error'); showPage('dev'); return } toggleCourseEditor(true); },120) }
+    function deleteCourse(courseId){ if(!confirm('Delete course?')) return; window.appData.courses = window.appData.courses.filter(c=>c.id!==courseId); saveData(); renderCourseGrid(); showNotification('Course deleted','success'); trackEvent('course_deleted',{courseId}); }
 
-        function uploadNote() {
-            if (!window.currentUser) { showNotification('Please sign in to share notes', 'error'); return; }
-            const courseId = parseInt(document.getElementById('upload-course-select').value);
-            const title = document.getElementById('upload-note-title').value.trim();
-            const content = document.getElementById('upload-note-content').value.trim();
-            if (!courseId || !title || !content) { showNotification('Please fill in all fields', 'error'); return; }
-            const newNote = {
-                id: Date.now(),
-                courseId,
-                title,
-                content,
-                author: window.currentUser.name,
-                authorId: window.currentUser.id,
-                createdAt: new Date().toISOString(),
-                downloads: 0,
-                ratings: [],
-                averageRating: 0
-            };
-            window.appData.communityNotes.push(newNote);
-            saveData();
-            document.getElementById('upload-course-select').value = '';
-            document.getElementById('upload-note-title').value = '';
-            document.getElementById('upload-note-content').value = '';
-            showNotification('Note shared successfully', 'success');
-            trackEvent('note_uploaded', { noteId: newNote.id });
-            renderCommunityPage();
-        }
+    function toggleAddCourseForm(){ document.getElementById('add-course-form').classList.toggle('hidden'); }
+    function saveNewCourse(){
+      const title = document.getElementById('new-course-title').value.trim();
+      const emoji = document.getElementById('new-course-emoji').value.trim();
+      const description = document.getElementById('new-course-description').value.trim();
+      const notes = document.getElementById('new-course-notes').value.trim();
+      if(!title || !description){ showNotification('Title & description required','error'); return; }
+      const newCourse = { id:Date.now(), title, icon:emoji||'📘', description, notes: notes||'<p>No notes yet</p>', links:[] };
+      window.appData.courses.push(newCourse); saveData(); renderCourseGrid(); toggleAddCourseForm(); document.getElementById('new-course-title').value=''; document.getElementById('new-course-emoji').value=''; document.getElementById('new-course-description').value=''; document.getElementById('new-course-notes').value=''; showNotification('Course added','success'); trackEvent('course_added',{courseId:newCourse.id});
+    }
 
-        function applyFilters() {
-            const courseFilter = document.getElementById('filter-course').value;
-            const ratingFilter = document.getElementById('filter-rating').value;
-            const sortBy = document.getElementById('filter-sort').value;
-            let notes = (window.appData.communityNotes || []).slice();
-            if (courseFilter) notes = notes.filter(n => n.courseId == courseFilter);
-            if (ratingFilter) notes = notes.filter(n => (n.averageRating || 0) >= parseInt(ratingFilter));
-            notes.sort((a,b) => {
-                if (sortBy === 'rating') return (b.averageRating||0) - (a.averageRating||0);
-                if (sortBy === 'newest') return new Date(b.createdAt) - new Date(a.createdAt);
-                if (sortBy === 'oldest') return new Date(a.createdAt) - new Date(b.createdAt);
-                return (b.averageRating||0) - (a.averageRating||0);
-            });
-            renderCommunityNotes(notes);
-        }
+    // DEV MODE
+    function updateDeveloperMode(){ if(window.developerModeEnabled) document.body.classList.add('developer-mode'); else document.body.classList.remove('developer-mode'); renderCourseGrid(); renderCommunityPage(); renderDevDashboard(); }
+    function enableDeveloperMode(){ const pw = document.getElementById('dev-password').value; if(pw==='6767'){ window.developerModeEnabled = true; updateDeveloperMode(); document.getElementById('dev-content').classList.remove('hidden'); document.getElementById('dev-password-section').classList.add('hidden'); showNotification('Developer mode enabled','success'); } else showNotification('Incorrect password','error'); }
+    function exitDeveloperMode(){ window.developerModeEnabled = false; updateDeveloperMode(); showNotification('Exited dev mode','info'); showPage('home'); }
 
-        function renderCommunityNotes(notes) {
-            const list = document.getElementById('community-notes-list');
-            list.innerHTML = '';
-            notes.forEach(note => {
-                const course = (window.appData.courses || []).find(c => c.id === note.courseId);
-                const card = document.createElement('div');
-                card.className = 'note-card';
+    // COURSE DETAIL & EDITOR
+    function renderCourseDetail(){
+      if(!window.currentCourse) return;
+      document.getElementById('course-detail-title').textContent = window.currentCourse.title;
+      renderCourseNotes(); renderLinks(); initializeChat();
+      document.getElementById('course-notes-editor-wrapper').classList.add('hidden');
+      document.getElementById('edit-notes-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
+    }
+    function renderCourseNotes(){
+      const el = document.getElementById('notes-dropdowns');
+      const raw = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
+      if(containsHTML(raw)) el.innerHTML = raw; else el.innerHTML = parseMarkdown(raw);
+    }
+    function toggleCourseEditor(open){
+      if(!window.developerModeEnabled){ showNotification('Enable dev mode to edit notes','error'); return; }
+      const wrapper = document.getElementById('course-notes-editor-wrapper');
+      const viewer = document.getElementById('notes-dropdowns');
+      const editBtn = document.getElementById('edit-notes-button');
+      if(open){
+        let content = (window.currentCourse && window.currentCourse.notes) ? window.currentCourse.notes : '';
+        if(!containsHTML(content)) content = parseMarkdown(content);
+        document.getElementById('course-notes-editor').innerHTML = content;
+        wrapper.classList.remove('hidden');
+        viewer.classList.add('hidden'); editBtn.classList.add('hidden');
+        setTimeout(()=>document.getElementById('course-notes-editor').focus(),30);
+      }else{
+        wrapper.classList.add('hidden'); viewer.classList.remove('hidden'); editBtn.classList.remove('hidden');
+      }
+    }
+    function saveCourseNotes(){
+      if(!window.currentCourse) return;
+      const html = document.getElementById('course-notes-editor').innerHTML;
+      window.currentCourse.notes = html;
+      const idx = window.appData.courses.findIndex(c=>c.id===window.currentCourse.id); if(idx!==-1) window.appData.courses[idx]=window.currentCourse;
+      saveData(); toggleCourseEditor(false); renderCourseNotes(); showNotification('Notes saved','success'); trackEvent('course_notes_saved',{courseId:window.currentCourse.id});
+    }
 
-                const ratingStars = generateRatingStars(note.averageRating || 0);
-                const ratingsCount = note.ratings ? note.ratings.length : 0;
+    // Editor tools
+    function formatSelection(cmd){ if(cmd==='bold') document.execCommand('bold'); if(cmd==='italic') document.execCommand('italic'); }
+    function insertBlock(tag){
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount===0){ const ed = document.getElementById('course-notes-editor'); ed.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`); return; }
+      const range = sel.getRangeAt(0); const content = range.extractContents(); const el = document.createElement(tag); el.appendChild(content); range.insertNode(el); range.collapse(false);
+    }
+    function setFontSize(size){
+      if(!size) return;
+      const sel = window.getSelection(); if(!sel || sel.isCollapsed) return;
+      const range = sel.getRangeAt(0); const span = document.createElement('span'); span.style.fontSize = size; span.appendChild(range.extractContents()); range.insertNode(span);
+    }
+    function insertDropdownSection(){
+      const ed = document.getElementById('course-notes-editor');
+      const html = `<details><summary>New Section</summary><div style="padding:.5rem 0">Content...</div></details><br/>`;
+      const sel = window.getSelection();
+      if(sel && sel.rangeCount){ const range = sel.getRangeAt(0); const container = document.createElement('div'); container.innerHTML = html; const frag = document.createDocumentFragment(); while(container.firstChild) frag.appendChild(container.firstChild); range.insertNode(frag); } else ed.insertAdjacentHTML('beforeend', html);
+    }
 
-                // If dev mode, show delete button inline
-                const deleteButtonHtml = window.developerModeEnabled ? `<button class="note-delete btn btn-danger" onclick="deleteCommunityNote(${note.id})"><i class="fas fa-trash"></i> Delete</button>` : '';
+    // LINKS
+    function renderLinks(){
+      const grid = document.getElementById('links-grid'); grid.innerHTML = '';
+      if(!window.currentCourse || !window.currentCourse.links) return;
+      window.currentCourse.links.forEach((link, idx) => {
+        const c = document.createElement('div'); c.className='link-card';
+        c.innerHTML = `<div style="font-size:14px"><strong>${escapeHtml(link.title)}</strong><div style="color:var(--muted);font-size:13px">${escapeHtml(link.url)}</div></div><div><button class="btn btn-outline" onclick="window.open('${escapeAttr(link.url)}','_blank')"><i class="fas fa-external-link-alt"></i></button> <button class="btn btn-outline" onclick="deleteLink(${idx})"><i class="fas fa-trash"></i></button></div>`;
+        grid.appendChild(c);
+      });
+    }
+    function toggleAddLinkForm(){ document.getElementById('add-link-form').classList.toggle('hidden'); }
+    function saveNewLink(){ const title=document.getElementById('new-link-title').value.trim(); const url=document.getElementById('new-link-url').value.trim(); if(!title||!url){ showNotification('Fill fields','error'); return; } if(!isValidUrl(url)){ showNotification('Invalid URL','error'); return; } if(!window.currentCourse.links) window.currentCourse.links=[]; window.currentCourse.links.push({title,url}); const idx = window.appData.courses.findIndex(c=>c.id===window.currentCourse.id); if(idx!==-1) window.appData.courses[idx]=window.currentCourse; saveData(); renderLinks(); toggleAddLinkForm(); document.getElementById('new-link-title').value=''; document.getElementById('new-link-url').value=''; showNotification('Link saved','success'); }
 
-                card.innerHTML = `
-                    <div class="note-meta">${course ? escapeHtml(course.title) : 'Unknown Course'} • by ${escapeHtml(note.author)} • ${new Date(note.createdAt).toLocaleDateString()}</div>
-                    <h3 class="mb-2">${escapeHtml(note.title)}</h3>
-                    <div class="rating-display mb-2">${ratingStars} <span>(${ratingsCount} ratings)</span></div>
-                    <div class="note-actions">
-                        <button class="btn btn-outline" onclick="viewNote(${note.id})"><i class="fas fa-eye"></i> View Notes</button>
-                        ${deleteButtonHtml}
-                    </div>
-                `;
-                list.appendChild(card);
-            });
-        }
+    // CHAT (kept minimal)
+    function initializeChat(){
+      const container = document.getElementById('chat-container');
+      if(!window.currentUser){ container.innerHTML = `<div style="padding:18px;color:var(--muted)">Sign in to use the AI assistant.</div>`; return; }
+      container.innerHTML = `<div style="padding:12px;color:var(--muted)">AI chat is available (replace sendChatMessage with your integration).</div>`;
+    }
 
-        function generateRatingStars(rating) {
-            // rating may be decimal
-            let stars = '';
-            for (let i=1;i<=5;i++) {
-                if (rating >= i) stars += '<i class="fas fa-star" style="color:#fbbf24;"></i>';
-                else if (rating > i-1 && rating < i) stars += '<i class="fas fa-star-half-alt" style="color:#fbbf24;"></i>';
-                else stars += '<i class="far fa-star" style="color:#d1d5db;"></i>';
-            }
-            return stars;
-        }
+    // COMMUNITY
+    function renderCommunityPage(){
+      const uploadSelect = document.getElementById('upload-course-select');
+      const filterSelect = document.getElementById('filter-course');
+      uploadSelect.innerHTML = '<option value="">Select a course</option>'; filterSelect.innerHTML = '<option value="">All Courses</option>';
+      (window.appData.courses||[]).forEach(c=>{ const o1=document.createElement('option'); o1.value=c.id; o1.textContent=c.title; uploadSelect.appendChild(o1); const o2=document.createElement('option'); o2.value=c.id; o2.textContent=c.title; filterSelect.appendChild(o2); });
+      document.getElementById('upload-guest-message').style.display = window.currentUser ? 'none' : 'block';
+      applyFilters();
+    }
+    function uploadNote(){
+      if(!window.currentUser){ showNotification('Please sign in to share notes','error'); return; }
+      const courseId = parseInt(document.getElementById('upload-course-select').value);
+      const title = document.getElementById('upload-note-title').value.trim();
+      const content = document.getElementById('upload-note-content').value.trim();
+      if(!courseId || !title || !content){ showNotification('Fill fields','error'); return; }
+      const note = { id:Date.now(), courseId, title, content, author: window.currentUser.name, authorId: window.currentUser.id, createdAt: new Date().toISOString(), downloads:0, ratings:[], averageRating:0 };
+      window.appData.communityNotes.push(note); saveData(); document.getElementById('upload-course-select').value=''; document.getElementById('upload-note-title').value=''; document.getElementById('upload-note-content').value=''; showNotification('Note shared','success'); trackEvent('note_uploaded',{noteId:note.id}); renderCommunityPage();
+    }
 
-        function viewNote(noteId) {
-            const note = (window.appData.communityNotes || []).find(n => n.id === noteId);
-            if (!note) return;
-            window.currentNote = note;
-            document.getElementById('view-note-title').textContent = note.title;
-            document.getElementById('view-note-meta').textContent = `by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
+    function applyFilters(){
+      const courseFilter=document.getElementById('filter-course').value;
+      const ratingFilter=document.getElementById('filter-rating').value;
+      const sortBy=document.getElementById('filter-sort').value;
+      let notes = (window.appData.communityNotes||[]).slice();
+      if(courseFilter) notes = notes.filter(n=>n.courseId==courseFilter);
+      if(ratingFilter) notes = notes.filter(n=> (n.averageRating||0) >= parseInt(ratingFilter));
+      notes.sort((a,b)=>{ if(sortBy==='rating') return (b.averageRating||0)-(a.averageRating||0); if(sortBy==='newest') return new Date(b.createdAt)-new Date(a.createdAt); if(sortBy==='oldest') return new Date(a.createdAt)-new Date(b.createdAt); return (b.averageRating||0)-(a.averageRating||0); });
+      renderCommunityNotes(notes);
+    }
+    function renderCommunityNotes(notes){
+      const list = document.getElementById('community-notes-list'); list.innerHTML='';
+      notes.forEach(note=>{
+        const course = (window.appData.courses||[]).find(c=>c.id===note.courseId);
+        const card = document.createElement('div'); card.className='note-card';
+        const ratingStars = generateRatingStars(note.averageRating||0);
+        const ratingsCount = note.ratings ? note.ratings.length : 0;
+        const deleteButtonHtml = window.developerModeEnabled ? `<button class="note-delete btn btn-danger" onclick="deleteCommunityNote(${note.id})"><i class="fas fa-trash"></i> Delete</button>` : '';
+        card.innerHTML = `
+          <div class="note-meta">${course ? escapeHtml(course.title) : 'Unknown'} • by ${escapeHtml(note.author)} • ${new Date(note.createdAt).toLocaleDateString()}</div>
+          <h3 style="margin:6px 0">${escapeHtml(note.title)}</h3>
+          <div class="rating-display">${ratingStars} <span style="margin-left:8px;color:var(--muted)">${ratingsCount} ratings</span></div>
+          <div class="note-actions" style="margin-top:8px"><button class="btn btn-outline" onclick="viewNote(${note.id})"><i class="fas fa-eye"></i> View</button>${deleteButtonHtml}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
 
-            // display rating
-            document.getElementById('view-rating-stars').innerHTML = generateRatingStars(note.averageRating || 0);
-            document.getElementById('view-rating-text').textContent = `${note.averageRating ? note.averageRating.toFixed(1) : '0'} (${note.ratings ? note.ratings.length : 0} ratings)`;
+    function generateRatingStars(rating){
+      let stars=''; for(let i=1;i<=5;i++){ if(rating>=i) stars+='<i class="fas fa-star" style="color:#fbbf24"></i>'; else if(rating>i-1 && rating<i) stars+='<i class="fas fa-star-half-alt" style="color:#fbbf24"></i>'; else stars+='<i class="far fa-star" style="color:#d1d5db"></i>'; } return stars;
+    }
 
-            // user rating section visibility
-            const userRatingSection = document.getElementById('user-rating-section');
-            if (window.currentUser && window.currentUser.id !== note.authorId) {
-                userRatingSection.classList.remove('hidden');
-                buildUserRatingStars(); // interactive stars that auto-submit
-                window.userRating = 0;
-            } else {
-                userRatingSection.classList.add('hidden');
-            }
+    // NOTE VIEW / RATING
+    function viewNote(noteId){
+      const note = (window.appData.communityNotes||[]).find(n=>n.id===noteId); if(!note) return;
+      window.currentNote = note;
+      document.getElementById('view-note-title').textContent = note.title;
+      document.getElementById('view-note-meta').textContent = `by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
+      document.getElementById('view-rating-stars').innerHTML = generateRatingStars(note.averageRating||0);
+      document.getElementById('view-rating-text').textContent = `${note.averageRating ? note.averageRating.toFixed(1) : '0'} (${note.ratings ? note.ratings.length : 0} ratings)`;
 
-            // show/hide edit/delete controls for community note:
-            const editBtn = document.getElementById('edit-community-note-button');
-            const delBtn = document.getElementById('delete-community-note-button');
-            // show edit if current user is the author or developer mode is enabled
-            if ((window.currentUser && window.currentUser.id === note.authorId) || window.developerModeEnabled) {
-                editBtn.style.display = 'inline-flex';
-            } else {
-                editBtn.style.display = 'none';
-            }
-            // delete shown only in dev mode
-            if (window.developerModeEnabled) {
-                delBtn.style.display = 'inline-flex';
-            } else {
-                delBtn.style.display = 'none';
-            }
+      const userRatingSection = document.getElementById('user-rating-section');
+      if(window.currentUser && window.currentUser.id !== note.authorId){ userRatingSection.style.display = 'flex'; buildUserRatingStars(); } else userRatingSection.style.display = 'none';
 
-            // show content (content may be markdown or html)
-            const contentEl = document.getElementById('view-note-content');
-            if (containsHTML(note.content)) contentEl.innerHTML = note.content;
-            else contentEl.innerHTML = parseMarkdown(note.content);
+      // edit/delete visibility
+      const editBtn = document.getElementById('edit-community-note-button');
+      const delBtn = document.getElementById('delete-community-note-button');
+      if((window.currentUser && window.currentUser.id===note.authorId) || window.developerModeEnabled) editBtn.style.display='inline-flex'; else editBtn.style.display='none';
+      delBtn.style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
 
-            // ensure editor is hidden
-            toggleCommunityEditor(false, true);
+      const contentEl = document.getElementById('view-note-content');
+      if(containsHTML(note.content)) contentEl.innerHTML = note.content; else contentEl.innerHTML = parseMarkdown(note.content);
 
-            showPage('note-view');
-        }
+      toggleCommunityEditor(false, true);
+      showPage('note-view');
+    }
 
-        // Build interactive stars for user rating (hover + click -> immediate submit)
-        function buildUserRatingStars() {
-            const container = document.getElementById('user-rating-stars');
-            container.innerHTML = '';
-            for (let i=1;i<=5;i++) {
-                const star = document.createElement('i');
-                star.className = 'fas fa-star rating-star';
-                star.dataset.rating = i;
-                star.addEventListener('mouseenter', () => previewUserRating(i));
-                star.addEventListener('mouseleave', () => previewUserRating(window.userRating || 0));
-                star.addEventListener('click', () => {
-                    setUserRating(i);
-                    // immediate submit on click as requested
-                    submitRating();
-                });
-                container.appendChild(star);
-            }
-            previewUserRating(0); // reset visuals
-        }
+    // Interactive stars -> immediate submit
+    function buildUserRatingStars(){
+      const container = document.getElementById('user-rating-stars'); container.innerHTML='';
+      for(let i=1;i<=5;i++){
+        const star = document.createElement('i'); star.className='fas fa-star rating-star'; star.dataset.rating=i;
+        star.addEventListener('mouseenter', ()=>previewUserRating(i));
+        star.addEventListener('mouseleave', ()=>previewUserRating(window.userRating||0));
+        star.addEventListener('click', ()=>{ setUserRating(i); submitRating(); });
+        container.appendChild(star);
+      }
+      previewUserRating(0);
+    }
+    function previewUserRating(rating){ document.querySelectorAll('#user-rating-stars .rating-star').forEach((s,idx)=>{ const i=idx+1; s.classList.toggle('active', i<=rating); }); }
+    function setUserRating(rating){ window.userRating = rating; previewUserRating(rating); }
 
-        function previewUserRating(rating) {
-            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-            stars.forEach((s, idx) => {
-                const i = idx + 1;
-                s.classList.remove('active', 'hover');
-                if (i <= rating) {
-                    s.classList.add('active');
-                }
-            });
-        }
+    function submitRating(){
+      if(!window.currentUser || !window.currentNote || !window.userRating){ if(!window.userRating) showNotification('Click a star to rate','error'); return; }
+      const note = window.currentNote; const userId = window.currentUser.id;
+      if(!note.ratings) note.ratings=[];
+      const idx = note.ratings.findIndex(r=>r.userId===userId);
+      if(idx!==-1) note.ratings[idx].rating = window.userRating; else note.ratings.push({userId, rating:window.userRating});
+      const total = note.ratings.reduce((s,r)=>s+r.rating,0); note.averageRating = total / note.ratings.length;
+      const nidx = window.appData.communityNotes.findIndex(n=>n.id===note.id); if(nidx!==-1) window.appData.communityNotes[nidx]=note;
+      saveData(); showNotification('Rating saved','success'); trackEvent('note_rated',{noteId:note.id, rating:window.userRating});
+      viewNote(note.id); renderCommunityPage();
+    }
 
-        function setUserRating(rating) {
-            window.userRating = rating;
-            previewUserRating(rating);
-        }
+    // Community note deletion (dev)
+    function deleteCommunityNote(noteId){
+      if(!window.developerModeEnabled){ showNotification('Only devs can delete notes','error'); return; }
+      if(!confirm('Delete community note?')) return;
+      window.appData.communityNotes = window.appData.communityNotes.filter(n=>n.id!==noteId);
+      saveData(); showNotification('Note deleted','success'); if(window.currentNote && window.currentNote.id===noteId){ window.currentNote=null; showPage('community'); } else renderCommunityPage(); trackEvent('community_note_deleted',{noteId});
+    }
 
-        function submitRating() {
-            if (!window.currentUser || !window.currentNote || !window.userRating) {
-                // if no rating selected, show a hint instead of error
-                if (!window.userRating) showNotification('Please select a rating by clicking a star', 'error');
-                return;
-            }
-            const note = window.currentNote;
-            const userId = window.currentUser.id;
-            if (!note.ratings) note.ratings = [];
-            const existingIndex = note.ratings.findIndex(r => r.userId === userId);
-            if (existingIndex !== -1) note.ratings[existingIndex].rating = window.userRating;
-            else note.ratings.push({ userId, rating: window.userRating });
-            const total = note.ratings.reduce((s,r) => s + r.rating, 0);
-            note.averageRating = total / note.ratings.length;
-            const noteIdx = window.appData.communityNotes.findIndex(n => n.id === note.id);
-            if (noteIdx !== -1) window.appData.communityNotes[noteIdx] = note;
-            saveData();
-            showNotification('Rating submitted successfully!', 'success');
-            trackEvent('note_rated', { noteId: note.id, rating: window.userRating });
-            // refresh view and community list
-            // keep currentNote so viewNote will update correctly
-            viewNote(note.id);
-            renderCommunityPage();
-        }
+    // Community note edit
+    function toggleCommunityEditor(open, forceHide=false){
+      const wrapper = document.getElementById('community-note-editor-wrapper');
+      const editor = document.getElementById('community-note-editor');
+      const viewer = document.getElementById('view-note-content');
+      const editBtn = document.getElementById('edit-community-note-button');
+      if(forceHide) open=false;
+      if(!window.currentNote){ showNotification('No note selected','error'); return; }
+      if(open){
+        if(!((window.currentUser && window.currentUser.id===window.currentNote.authorId) || window.developerModeEnabled)){ showNotification('Not allowed to edit','error'); return; }
+        let content = window.currentNote.content||'';
+        if(!containsHTML(content)) content = parseMarkdown(content);
+        editor.innerHTML = content;
+        wrapper.classList.remove('hidden'); viewer.classList.add('hidden'); editBtn.classList.add('hidden');
+        document.getElementById('delete-community-note-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
+        setTimeout(()=>editor.focus(),30);
+      }else{ wrapper.classList.add('hidden'); viewer.classList.remove('hidden'); editBtn.classList.remove('hidden'); }
+    }
 
-        // Community note deletion (dev only)
-        function deleteCommunityNote(noteId) {
-            if (!window.developerModeEnabled) {
-                showNotification('Only developers can delete community notes', 'error');
-                return;
-            }
-            if (!confirm('Delete this community note? This cannot be undone.')) return;
-            window.appData.communityNotes = window.appData.communityNotes.filter(n => n.id !== noteId);
-            saveData();
-            showNotification('Community note deleted', 'success');
-            // if viewing that note, go back to community
-            if (window.currentNote && window.currentNote.id === noteId) {
-                window.currentNote = null;
-                showPage('community');
-            } else {
-                renderCommunityPage();
-            }
-            trackEvent('community_note_deleted', { noteId });
-        }
+    function communityFormat(cmd){ if(cmd==='bold') document.execCommand('bold'); if(cmd==='italic') document.execCommand('italic'); }
+    function communityInsertBlock(tag){ const sel = window.getSelection(); if(!sel || sel.rangeCount===0){ const ed = document.getElementById('community-note-editor'); ed.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`); return; } const range = sel.getRangeAt(0); const content = range.extractContents(); const el = document.createElement(tag); el.appendChild(content); range.insertNode(el); range.collapse(false); }
+    function communitySetFontSize(size){ if(!size) return; const sel = window.getSelection(); if(!sel || sel.isCollapsed) return; const range = sel.getRangeAt(0); const span = document.createElement('span'); span.style.fontSize = size; span.appendChild(range.extractContents()); range.insertNode(span); }
+    function communityInsertDropdown(){ const editor = document.getElementById('community-note-editor'); const html = `<details><summary>New Section</summary><div style="padding:.5rem 0">Content...</div></details><br/>`; const sel = window.getSelection(); if(sel && sel.rangeCount){ const range = sel.getRangeAt(0); const node=document.createElement('div'); node.innerHTML=html; const frag=document.createDocumentFragment(); while(node.firstChild) frag.appendChild(node.firstChild); range.insertNode(frag); } else editor.insertAdjacentHTML('beforeend', html); }
+    function saveCommunityNoteEdits(){ if(!window.currentNote) return; if(!((window.currentUser && window.currentUser.id===window.currentNote.authorId) || window.developerModeEnabled)){ showNotification('Not allowed to save','error'); return; } const html = document.getElementById('community-note-editor').innerHTML; window.currentNote.content = html; const idx = window.appData.communityNotes.findIndex(n=>n.id===window.currentNote.id); if(idx!==-1) window.appData.communityNotes[idx]=window.currentNote; saveData(); toggleCommunityEditor(false); document.getElementById('view-note-content').innerHTML = html; showNotification('Saved','success'); trackEvent('community_note_edited',{noteId:window.currentNote.id}); renderCommunityPage(); }
 
-        // Community note editing (author or dev)
-        function toggleCommunityEditor(open, forceHide = false) {
-            const wrapper = document.getElementById('community-note-editor-wrapper');
-            const editor = document.getElementById('community-note-editor');
-            const viewer = document.getElementById('view-note-content');
-            const editBtn = document.getElementById('edit-community-note-button');
-            if (forceHide) open = false;
-            if (!window.currentNote) { showNotification('No note selected', 'error'); return; }
-            if (open) {
-                // permission check: author or developer
-                if (!((window.currentUser && window.currentUser.id === window.currentNote.authorId) || window.developerModeEnabled)) {
-                    showNotification('You are not allowed to edit this note', 'error');
-                    return;
-                }
-                // populate editor with HTML content
-                let content = window.currentNote.content || '';
-                if (!containsHTML(content)) content = parseMarkdown(content);
-                editor.innerHTML = content;
-                wrapper.classList.remove('hidden');
-                viewer.classList.add('hidden');
-                editBtn.classList.add('hidden');
-                // if dev, show delete button
-                document.getElementById('delete-community-note-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
-                setTimeout(()=> editor.focus(), 50);
-            } else {
-                wrapper.classList.add('hidden');
-                viewer.classList.remove('hidden');
-                editBtn.classList.remove('hidden');
-            }
-        }
+    // DEV: course search
+    function renderDevDashboard(){
+      if(!window.developerModeEnabled){ document.getElementById('dev-password-section').classList.remove('hidden'); document.getElementById('dev-content').classList.add('hidden'); return; }
+      document.getElementById('dev-password-section').classList.add('hidden'); document.getElementById('dev-content').classList.remove('hidden');
+      document.getElementById('total-users').textContent = (window.appData.users||[]).length || 0;
+      document.getElementById('guest-users').textContent = window.appData.analytics.guestUsers || 0;
+      document.getElementById('total-notes').textContent = (window.appData.communityNotes||[]).length || 0;
+      document.getElementById('users-table-body').innerHTML = ''; (window.appData.users||[]).forEach(u=>{ const tr=document.createElement('tr'); tr.innerHTML = `<td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td>${new Date(u.createdAt).toLocaleDateString()}</td>`; document.getElementById('users-table-body').appendChild(tr); });
+      const actBody = document.getElementById('activity-table-body'); actBody.innerHTML=''; (window.appData.analytics.sessions||[]).slice(-10).reverse().forEach(a=>{ const tr = document.createElement('tr'); tr.innerHTML = `<td>${escapeHtml(a.ev)}</td><td>${escapeHtml(a.userId||'Guest')}</td><td>${new Date(a.timestamp).toLocaleString()}</td>`; actBody.appendChild(tr); });
+      // Ensure the search box is cleared
+      document.getElementById('dev-course-search').value = '';
+      document.getElementById('dev-course-search-results').innerHTML = '';
+    }
+    function searchCoursesInDev(){
+      const q = document.getElementById('dev-course-search').value.trim().toLowerCase();
+      const resultsEl = document.getElementById('dev-course-search-results'); resultsEl.innerHTML = '';
+      if(!q) return;
+      const matches = (window.appData.courses||[]).filter(c => c.title.toLowerCase().includes(q));
+      if(matches.length===0){ resultsEl.innerHTML = '<div style="color:var(--muted)">No classes found</div>'; return; }
+      matches.forEach(c=>{
+        const div = document.createElement('div'); div.style.display='flex'; div.style.justifyContent='space-between'; div.style.alignItems='center'; div.style.padding='8px'; div.style.borderBottom='1px dashed rgba(15,23,42,0.04)';
+        div.innerHTML = `<div><strong>${escapeHtml(c.title)}</strong><div style="color:var(--muted);font-size:13px">${escapeHtml(c.description)}</div></div><div style="display:flex;gap:8px"><button class="btn btn-outline" onclick="openCourse(${c.id})">Open</button><button class="btn btn-primary" onclick="(function(){ editCourse(${c.id}); })()"><i class="fas fa-edit"></i></button></div>`;
+        resultsEl.appendChild(div);
+      });
+    }
 
-        function communityFormat(cmd) {
-            if (cmd === 'bold') document.execCommand('bold', false, null);
-            if (cmd === 'italic') document.execCommand('italic', false, null);
-        }
-        function communityInsertBlock(tag) {
-            const selection = window.getSelection();
-            if (!selection || selection.rangeCount === 0) {
-                const editor = document.getElementById('community-note-editor');
-                editor.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`);
-                return;
-            }
-            const range = selection.getRangeAt(0);
-            const content = range.extractContents();
-            const container = document.createElement(tag);
-            container.appendChild(content);
-            range.insertNode(container);
-            range.collapse(false);
-        }
-        function communitySetFontSize(size) {
-            if (!size) return;
-            const selection = window.getSelection();
-            if (!selection || selection.isCollapsed) return;
-            const range = selection.getRangeAt(0);
-            const span = document.createElement('span');
-            span.style.fontSize = size;
-            span.appendChild(range.extractContents());
-            range.insertNode(span);
-        }
-        function communityInsertDropdown() {
-            const editor = document.getElementById('community-note-editor');
-            const dropdownHtml = `<details><summary>New Section</summary><div style="padding: .5rem 0;">Detailed content here...</div></details><br/>`;
-            const selection = window.getSelection();
-            if (selection && selection.rangeCount) {
-                const range = selection.getRangeAt(0);
-                const node = document.createElement('div');
-                node.innerHTML = dropdownHtml;
-                const frag = document.createDocumentFragment();
-                while (node.firstChild) frag.appendChild(node.firstChild);
-                range.insertNode(frag);
-            } else {
-                editor.insertAdjacentHTML('beforeend', dropdownHtml);
-            }
-        }
-        function saveCommunityNoteEdits() {
-            if (!window.currentNote) return;
-            // permission check
-            if (!((window.currentUser && window.currentUser.id === window.currentNote.authorId) || window.developerModeEnabled)) {
-                showNotification('You are not allowed to edit this note', 'error');
-                return;
-            }
-            const html = document.getElementById('community-note-editor').innerHTML;
-            window.currentNote.content = html;
-            const idx = window.appData.communityNotes.findIndex(n => n.id === window.currentNote.id);
-            if (idx !== -1) window.appData.communityNotes[idx] = window.currentNote;
-            saveData();
-            toggleCommunityEditor(false);
-            // re-render content
-            document.getElementById('view-note-content').innerHTML = html;
-            showNotification('Community note saved', 'success');
-            trackEvent('community_note_edited', { noteId: window.currentNote.id });
-            renderCommunityPage();
-        }
+    // DEV: simple stats
+    function calculateAvgSessionTime(){ if(!window.appData.analytics.sessions || window.appData.analytics.sessions.length===0) return '0m'; return Math.floor(Math.random()*30) + 'm'; }
 
-        // Dev Dashboard
-        function renderDevDashboard() {
-            if (!window.developerModeEnabled) {
-                document.getElementById('dev-password-section').classList.remove('hidden');
-                document.getElementById('dev-content').classList.add('hidden');
-                return;
-            }
-            document.getElementById('dev-password-section').classList.add('hidden');
-            document.getElementById('dev-content').classList.remove('hidden');
-            document.getElementById('total-users').textContent = window.appData.analytics.totalUsers || (window.appData.users ? window.appData.users.length : 0);
-            document.getElementById('guest-users').textContent = window.appData.analytics.guestUsers || 0;
-            document.getElementById('total-notes').textContent = window.appData.communityNotes.length || 0;
-            document.getElementById('avg-session').textContent = calculateAvgSessionTime();
-            const usersBody = document.getElementById('users-table-body');
-            usersBody.innerHTML = '';
-            (window.appData.users || []).forEach(u => {
-                const tr = document.createElement('tr');
-                tr.className = 'table-row';
-                tr.innerHTML = `<td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td>${new Date(u.createdAt).toLocaleDateString()}</td>`;
-                usersBody.appendChild(tr);
-            });
-            const actBody = document.getElementById('activity-table-body');
-            actBody.innerHTML = '';
-            const recent = (window.appData.analytics.sessions || []).slice(-10).reverse();
-            recent.forEach(a => {
-                const tr = document.createElement('tr');
-                tr.className = 'table-row';
-                tr.innerHTML = `<td>${escapeHtml(a.ev)}</td><td>${escapeHtml(a.userId || 'Guest')}</td><td>${new Date(a.timestamp).toLocaleString()}</td>`;
-                actBody.appendChild(tr);
-            });
-        }
+    // AUTH
+    function updateAuthUI(){ const btn = document.getElementById('auth-button'); if(window.currentUser){ btn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${escapeHtml(window.currentUser.name)}`; btn.onclick = ()=>signOut(); } else { btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Sign In`; btn.onclick = ()=>showPage('auth'); } }
+    function toggleAuthMode(){ window.isSignUpMode = !window.isSignUpMode; const title = document.getElementById('auth-title'); const submit = document.getElementById('auth-submit-text'); const toggle = document.getElementById('auth-toggle-text'); const nameField = document.getElementById('name-field'); if(window.isSignUpMode){ title.textContent='Sign Up'; submit.textContent='Sign Up'; toggle.textContent='Already have an account? Sign In'; nameField.classList.remove('hidden'); } else { title.textContent='Sign In'; submit.textContent='Sign In'; toggle.textContent='Sign Up'; nameField.classList.add('hidden'); } }
+    function handleAuth(e){ e.preventDefault(); const email = document.getElementById('auth-email').value.trim(); const password = document.getElementById('auth-password').value; const name = document.getElementById('auth-name').value.trim(); if(window.isSignUpMode){ if(!name){ showNotification('Enter name','error'); return; } if((window.appData.users||[]).find(u=>u.email===email)){ showNotification('Email exists','error'); return; } const newUser = { id:Date.now(), email, password, name, createdAt:new Date().toISOString() }; window.appData.users.push(newUser); window.currentUser = newUser; saveData(); updateUI(); showPage('home'); showNotification('Account created','success'); trackEvent('user_signup',{userId:newUser.id}); } else { const user = (window.appData.users||[]).find(u=>u.email===email && u.password===password); if(!user){ showNotification('Invalid credentials','error'); return; } window.currentUser = user; saveData(); updateUI(); showPage('home'); showNotification(`Welcome back, ${user.name}`,'success'); trackEvent('user_signin',{userId:user.id}); } }
+    function signOut(){ const name = window.currentUser ? window.currentUser.name : 'User'; window.currentUser = null; saveData(); updateUI(); showNotification(`Goodbye, ${name}`,'info'); trackEvent('user_signout'); }
 
-        function enableDeveloperMode() {
-            const password = document.getElementById('dev-password').value;
-            if (password === '6767') {
-                window.developerModeEnabled = true;
-                updateDeveloperMode();
-                renderDevDashboard();
-                showNotification('Developer mode enabled', 'success');
-            } else showNotification('Incorrect password', 'error');
-        }
-        function calculateAvgSessionTime() { if (!window.appData.analytics.sessions || window.appData.analytics.sessions.length === 0) return '0m'; return Math.floor(Math.random()*30) + 'm'; }
+    function updateUI(){ updateAuthUI(); if(window.currentCourse) initializeChat(); renderCommunityPage(); renderCourseGrid(); }
 
-        // Auth
-        function updateAuthUI() {
-            const btn = document.getElementById('auth-button');
-            if (window.currentUser) {
-                btn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${escapeHtml(window.currentUser.name)}`;
-                btn.onclick = () => signOut();
-            } else { btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Sign In`; btn.onclick = () => showPage('auth'); }
-        }
-        function toggleAuthMode() {
-            window.isSignUpMode = !window.isSignUpMode;
-            const title = document.getElementById('auth-title');
-            const submitText = document.getElementById('auth-submit-text');
-            const toggleText = document.getElementById('auth-toggle-text');
-            const nameField = document.getElementById('name-field');
-            if (window.isSignUpMode) { title.textContent = 'Sign Up'; submitText.textContent = 'Sign Up'; toggleText.textContent = 'Already have an account? Sign In'; nameField.classList.remove('hidden'); }
-            else { title.textContent = 'Sign In'; submitText.textContent = 'Sign In'; toggleText.textContent = "Don't have an account? Sign Up"; nameField.classList.add('hidden'); }
-        }
-        function handleAuth(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value;
-            const name = document.getElementById('auth-name').value.trim();
-            if (window.isSignUpMode) {
-                if (!name) { showNotification('Please enter your name', 'error'); return; }
-                const exists = (window.appData.users || []).find(u => u.email === email);
-                if (exists) { showNotification('User with this email already exists', 'error'); return; }
-                const newUser = { id: Date.now(), email, password, name, createdAt: new Date().toISOString() };
-                window.appData.users.push(newUser);
-                window.currentUser = newUser;
-                window.appData.analytics.totalUsers = (window.appData.analytics.totalUsers || 0) + 1;
-                window.appData.analytics.registeredUsers = (window.appData.analytics.registeredUsers || 0) + 1;
-                saveData();
-                updateUI();
-                showPage('home');
-                showNotification('Account created successfully', 'success');
-                trackEvent('user_signup', { userId: newUser.id });
-            } else {
-                const user = (window.appData.users || []).find(u => u.email === email && u.password === password);
-                if (!user) { showNotification('Invalid email or password', 'error'); return; }
-                window.currentUser = user;
-                saveData();
-                updateUI();
-                showPage('home');
-                showNotification(`Welcome back, ${user.name}!`, 'success');
-                trackEvent('user_signin', { userId: user.id });
-            }
-        }
-        function signOut() {
-            const userName = window.currentUser ? window.currentUser.name : 'User';
-            window.currentUser = null;
-            saveData();
-            updateUI();
-            showNotification(`Goodbye, ${userName}!`, 'info');
-            trackEvent('user_signout');
-        }
-        function updateUI() {
-            updateAuthUI();
-            if (window.currentCourse) initializeChat();
-        }
+    // Utilities
+    function parseMarkdown(text){
+      if(!text) return '';
+      if(containsHTML(text)) return text;
+      let html = text.replace(/^# (.*$)/gm,'<h1>$1</h1>').replace(/^## (.*$)/gm,'<h2>$1</h2>').replace(/^### (.*$)/gm,'<h3>$1</h3>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/^- (.*$)/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+      html = html.replace(/(<li>.*<\/li>)(<br>)*(?=<li>)/g,'$1').replace(/(<li>.*<\/li>)/g,'<ul>$1</ul>');
+      return html;
+    }
+    function isValidUrl(s){ try{ new URL(s); return true }catch(e){ return false } }
+    function trackEvent(e,d={}){ window.appData.analytics.sessions = window.appData.analytics.sessions || []; window.appData.analytics.sessions.push({ ev:e, timestamp: new Date().toISOString(), userType: window.currentUser ? 'registered':'guest', userId: window.currentUser ? window.currentUser.id : null, ...d }); if(window.appData.analytics.sessions.length>1000) window.appData.analytics.sessions = window.appData.analytics.sessions.slice(-1000); saveData(); }
 
-        // Utilities
-        function showNotification(message, type='info') {
-            const bar = document.getElementById('notification-bar');
-            const content = document.getElementById('notification-content');
-            const text = document.getElementById('notification-text');
-            const icon = document.getElementById('notification-icon');
-            text.textContent = message;
-            content.className = 'notification-content';
-            switch(type) {
-                case 'success': icon.className = 'fas fa-check-circle'; content.classList.add('notification-success'); break;
-                case 'error': icon.className = 'fas fa-exclamation-circle'; content.classList.add('notification-error'); break;
-                default: icon.className = 'fas fa-info-circle'; content.classList.add('notification-info'); break;
-            }
-            bar.classList.add('show');
-            setTimeout(() => bar.classList.remove('show'), 3000);
-        }
+    function escapeHtml(s){ if(s===null||s===undefined) return ''; return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
+    function containsHTML(s){ return /<[^>]+>/.test(s); }
 
-        function parseMarkdown(text) {
-            if (!text) return '';
-            // If the content contains HTML tags, treat it as HTML already
-            if (containsHTML(text)) return text;
-            // Basic markdown -> HTML
-            let html = text
-                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/^- (.*$)/gm, '<li>$1</li>')
-                .replace(/\n/g, '<br>');
-            html = html.replace(/(<li>.*<\/li>)(<br>)*(?=<li>)/g, '$1');
-            html = html.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
-            // Keep details tags if user used them
-            html = html.replace(/<details>/g, '<details>').replace(/<\/details>/g, '</details>');
-            return html;
-        }
+    // Small bug fixes: ensure delete handlers don't bubble (buttons use event.stopPropagation already)
+    // Also ensure dev-mode toggles re-render UI
+    // Ensure search updates as you type (searchCoursesInDev)
 
-        function isValidUrl(string) {
-            try { new URL(string); return true; } catch(_) { return false; }
-        }
+    // Expose a small helper to developers to clear local storage if needed
+    window.__dev_clearStorage = function(){ if(confirm('Clear all app data from localStorage?')){ localStorage.removeItem('apExamAppData'); localStorage.removeItem('currentUser'); location.reload(); } }
 
-        function trackEvent(event, data = {}) {
-            const sess = { ev:event, timestamp: new Date().toISOString(), userType: window.currentUser ? 'registered' : 'guest', userId: window.currentUser ? window.currentUser.id : null, ...data };
-            window.appData.analytics.sessions = window.appData.analytics.sessions || [];
-            window.appData.analytics.sessions.push(sess);
-            if (window.appData.analytics.sessions.length > 1000) window.appData.analytics.sessions = window.appData.analytics.sessions.slice(-1000);
-            if (event === 'user_signup') { window.appData.analytics.totalUsers = (window.appData.analytics.totalUsers||0)+1; window.appData.analytics.registeredUsers = (window.appData.analytics.registeredUsers||0)+1; }
-            else if (event === 'page_view' && !window.currentUser) window.appData.analytics.guestUsers = (window.appData.analytics.guestUsers||0)+1;
-            saveData();
-        }
-        window.addEventListener('beforeunload', () => trackEvent('session_end'));
-
-        // Helpers to avoid XSS in dynamic text (we still allow HTML for notes intentionally)
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str).replace(/[&<>"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
-        }
-        function escapeAttr(str) { return escapeHtml(str).replace(/"/g, '&quot;'); }
-
-        function containsHTML(str) {
-            return /<[^>]+>/.test(str);
-        }
-
-        // Helper: renderNoteView placeholder in case other code expects it
-        function renderNoteView() { /* nothing additional required; viewNote handles rendering */ }
-
-    </script>
+    // End
+  </script>
 </body>
 </html>
