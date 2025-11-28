@@ -105,7 +105,7 @@
         .editor-toolbar .btn { padding:.4rem .6rem; font-size:.85rem; }
         .editor-toolbar select { padding:.4rem .6rem; border-radius:.25rem; border:1px solid var(--border); }
 
-        .course-notes-editor {
+        .course-notes-editor, .community-note-editor {
             min-height: 220px;
             padding: 1rem;
             border-radius: .5rem;
@@ -134,6 +134,11 @@
         .markdown-content strong { font-weight:bold; }
         .markdown-content details { margin-bottom:1rem; border:1px solid var(--border); border-radius:.25rem; }
         .markdown-content summary { padding:.5rem; background:#f8fafc; cursor:pointer; font-weight:500; }
+
+        /* Community note actions (dev only) */
+        .note-card .note-actions { margin-top: .75rem; display:flex; gap:.5rem; }
+        .developer-mode .note-card .note-delete { display:inline-flex; } 
+        .note-delete { display:none; background:var(--error); color:white; border:none; padding:.4rem .6rem; border-radius:.375rem; cursor:pointer; }
 
         /* Responsive */
         @media (max-width:768px) {
@@ -254,6 +259,7 @@
                     <div id="course-notes-editor-wrapper" class="notes-editor">
                         <div class="editor-toolbar">
                             <button class="btn btn-outline" onclick="formatSelection('bold')"><i class="fas fa-bold"></i> Bold</button>
+                            <button class="btn btn-outline" onclick="formatSelection('italic')"><i class="fas fa-italic"></i> Italic</button>
                             <button class="btn btn-outline" onclick="insertBlock('h1')">H1</button>
                             <button class="btn btn-outline" onclick="insertBlock('h2')">H2</button>
                             <select id="font-size-select" onchange="setFontSize(this.value)">
@@ -271,7 +277,6 @@
 
                     <div style="margin-top:1rem;">
                         <button id="edit-notes-button" class="btn btn-outline" onclick="toggleCourseEditor(true)"><i class="fas fa-edit"></i> Edit Notes</button>
-                        <button class="btn btn-outline" onclick="addNewDropdownSection()"><i class="fas fa-plus"></i> Add New Section</button>
                     </div>
                 </div>
 
@@ -335,7 +340,14 @@
         <div class="container">
             <button class="btn btn-outline mb-4" onclick="showPage('community')"><i class="fas fa-arrow-left"></i> Back to Community</button>
             <div class="note-card">
-                <h1 id="view-note-title"></h1>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h1 id="view-note-title" style="margin-right:1rem;"></h1>
+                    <div>
+                        <button id="edit-community-note-button" class="btn btn-outline" onclick="toggleCommunityEditor(true)"><i class="fas fa-edit"></i> Edit</button>
+                        <button id="delete-community-note-button" class="note-delete btn btn-danger" style="display:none;" onclick="deleteCommunityNote(window.currentNote?.id)"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+
                 <div id="view-note-meta" class="note-meta"></div>
 
                 <!-- Rating Display -->
@@ -348,10 +360,30 @@
                 <div id="user-rating-section" class="rating-container mb-4 hidden">
                     <label class="form-label">Rate these notes:</label>
                     <div class="rating-stars" id="user-rating-stars"></div>
-                    <button class="btn btn-primary" onclick="submitRating()"><i class="fas fa-check"></i> Submit Rating</button>
+                    <div style="font-size:.9rem;color:var(--gray);margin-left:.5rem;">Click a star to submit</div>
                 </div>
 
                 <div id="view-note-content" class="markdown-content"></div>
+
+                <!-- Community note editor (author + dev) -->
+                <div id="community-note-editor-wrapper" class="notes-editor hidden" style="margin-top:1rem;">
+                    <div class="editor-toolbar">
+                        <button class="btn btn-outline" onclick="communityFormat('bold')"><i class="fas fa-bold"></i> Bold</button>
+                        <button class="btn btn-outline" onclick="communityFormat('italic')"><i class="fas fa-italic"></i> Italic</button>
+                        <button class="btn btn-outline" onclick="communityInsertBlock('h1')">H1</button>
+                        <button class="btn btn-outline" onclick="communityInsertBlock('h2')">H2</button>
+                        <select id="community-font-size-select" onchange="communitySetFontSize(this.value)">
+                            <option value="">Font size</option>
+                            <option value="14px">Small</option>
+                            <option value="18px">Normal</option>
+                            <option value="22px">Large</option>
+                        </select>
+                        <button class="btn btn-outline" onclick="communityInsertDropdown()"><i class="fas fa-caret-square-down"></i> Insert Dropdown</button>
+                        <button class="btn btn-primary" onclick="saveCommunityNoteEdits()"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn btn-outline" onclick="toggleCommunityEditor(false)"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                    <div id="community-note-editor" class="community-note-editor" contenteditable="true" spellcheck="false"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -686,6 +718,7 @@
         function formatSelection(cmd) {
             // support simple commands
             if (cmd === 'bold') document.execCommand('bold', false, null);
+            if (cmd === 'italic') document.execCommand('italic', false, null);
         }
         function insertBlock(tag) {
             const selection = window.getSelection();
@@ -729,32 +762,6 @@
             } else {
                 editor.insertAdjacentHTML('beforeend', dropdownHtml);
             }
-        }
-
-        function addNewDropdownSection() {
-            // Utility to append a new details section to course notes quickly
-            if (!window.currentCourse) {
-                showNotification('No course selected', 'error');
-                return;
-            }
-            const toAdd = `<details><summary>New Section</summary><div style="padding:.5rem 0;">Your content...</div></details><br/>`;
-            if (!window.currentCourse.notes) window.currentCourse.notes = '';
-            if (containsHTML(window.currentCourse.notes)) {
-                window.currentCourse.notes += toAdd;
-            } else {
-                // convert markdown to HTML then append
-                window.currentCourse.notes = parseMarkdown(window.currentCourse.notes) + toAdd;
-            }
-            // update course and save
-            const idx = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-            if (idx !== -1) window.appData.courses[idx] = window.currentCourse;
-            saveData();
-            renderCourseNotes();
-            showNotification('Section added', 'success');
-        }
-
-        function containsHTML(str) {
-            return /<[^>]+>/.test(str);
         }
 
         // Links
@@ -908,11 +915,17 @@
                 const ratingStars = generateRatingStars(note.averageRating || 0);
                 const ratingsCount = note.ratings ? note.ratings.length : 0;
 
+                // If dev mode, show delete button inline
+                const deleteButtonHtml = window.developerModeEnabled ? `<button class="note-delete btn btn-danger" onclick="deleteCommunityNote(${note.id})"><i class="fas fa-trash"></i> Delete</button>` : '';
+
                 card.innerHTML = `
                     <div class="note-meta">${course ? escapeHtml(course.title) : 'Unknown Course'} • by ${escapeHtml(note.author)} • ${new Date(note.createdAt).toLocaleDateString()}</div>
                     <h3 class="mb-2">${escapeHtml(note.title)}</h3>
                     <div class="rating-display mb-2">${ratingStars} <span>(${ratingsCount} ratings)</span></div>
-                    <button class="btn btn-outline" onclick="viewNote(${note.id})"><i class="fas fa-eye"></i> View Notes</button>
+                    <div class="note-actions">
+                        <button class="btn btn-outline" onclick="viewNote(${note.id})"><i class="fas fa-eye"></i> View Notes</button>
+                        ${deleteButtonHtml}
+                    </div>
                 `;
                 list.appendChild(card);
             });
@@ -944,10 +957,26 @@
             const userRatingSection = document.getElementById('user-rating-section');
             if (window.currentUser && window.currentUser.id !== note.authorId) {
                 userRatingSection.classList.remove('hidden');
-                buildUserRatingStars();
+                buildUserRatingStars(); // interactive stars that auto-submit
                 window.userRating = 0;
             } else {
                 userRatingSection.classList.add('hidden');
+            }
+
+            // show/hide edit/delete controls for community note:
+            const editBtn = document.getElementById('edit-community-note-button');
+            const delBtn = document.getElementById('delete-community-note-button');
+            // show edit if current user is the author or developer mode is enabled
+            if ((window.currentUser && window.currentUser.id === note.authorId) || window.developerModeEnabled) {
+                editBtn.style.display = 'inline-flex';
+            } else {
+                editBtn.style.display = 'none';
+            }
+            // delete shown only in dev mode
+            if (window.developerModeEnabled) {
+                delBtn.style.display = 'inline-flex';
+            } else {
+                delBtn.style.display = 'none';
             }
 
             // show content (content may be markdown or html)
@@ -955,10 +984,13 @@
             if (containsHTML(note.content)) contentEl.innerHTML = note.content;
             else contentEl.innerHTML = parseMarkdown(note.content);
 
+            // ensure editor is hidden
+            toggleCommunityEditor(false, true);
+
             showPage('note-view');
         }
 
-        // Build interactive stars for user rating (hover + click)
+        // Build interactive stars for user rating (hover + click -> immediate submit)
         function buildUserRatingStars() {
             const container = document.getElementById('user-rating-stars');
             container.innerHTML = '';
@@ -968,7 +1000,11 @@
                 star.dataset.rating = i;
                 star.addEventListener('mouseenter', () => previewUserRating(i));
                 star.addEventListener('mouseleave', () => previewUserRating(window.userRating || 0));
-                star.addEventListener('click', () => setUserRating(i));
+                star.addEventListener('click', () => {
+                    setUserRating(i);
+                    // immediate submit on click as requested
+                    submitRating();
+                });
                 container.appendChild(star);
             }
             previewUserRating(0); // reset visuals
@@ -992,7 +1028,8 @@
 
         function submitRating() {
             if (!window.currentUser || !window.currentNote || !window.userRating) {
-                showNotification('Please select a rating', 'error');
+                // if no rating selected, show a hint instead of error
+                if (!window.userRating) showNotification('Please select a rating by clicking a star', 'error');
                 return;
             }
             const note = window.currentNote;
@@ -1009,7 +1046,122 @@
             showNotification('Rating submitted successfully!', 'success');
             trackEvent('note_rated', { noteId: note.id, rating: window.userRating });
             // refresh view and community list
+            // keep currentNote so viewNote will update correctly
             viewNote(note.id);
+            renderCommunityPage();
+        }
+
+        // Community note deletion (dev only)
+        function deleteCommunityNote(noteId) {
+            if (!window.developerModeEnabled) {
+                showNotification('Only developers can delete community notes', 'error');
+                return;
+            }
+            if (!confirm('Delete this community note? This cannot be undone.')) return;
+            window.appData.communityNotes = window.appData.communityNotes.filter(n => n.id !== noteId);
+            saveData();
+            showNotification('Community note deleted', 'success');
+            // if viewing that note, go back to community
+            if (window.currentNote && window.currentNote.id === noteId) {
+                window.currentNote = null;
+                showPage('community');
+            } else {
+                renderCommunityPage();
+            }
+            trackEvent('community_note_deleted', { noteId });
+        }
+
+        // Community note editing (author or dev)
+        function toggleCommunityEditor(open, forceHide = false) {
+            const wrapper = document.getElementById('community-note-editor-wrapper');
+            const editor = document.getElementById('community-note-editor');
+            const viewer = document.getElementById('view-note-content');
+            const editBtn = document.getElementById('edit-community-note-button');
+            if (forceHide) open = false;
+            if (!window.currentNote) { showNotification('No note selected', 'error'); return; }
+            if (open) {
+                // permission check: author or developer
+                if (!((window.currentUser && window.currentUser.id === window.currentNote.authorId) || window.developerModeEnabled)) {
+                    showNotification('You are not allowed to edit this note', 'error');
+                    return;
+                }
+                // populate editor with HTML content
+                let content = window.currentNote.content || '';
+                if (!containsHTML(content)) content = parseMarkdown(content);
+                editor.innerHTML = content;
+                wrapper.classList.remove('hidden');
+                viewer.classList.add('hidden');
+                editBtn.classList.add('hidden');
+                // if dev, show delete button
+                document.getElementById('delete-community-note-button').style.display = window.developerModeEnabled ? 'inline-flex' : 'none';
+                setTimeout(()=> editor.focus(), 50);
+            } else {
+                wrapper.classList.add('hidden');
+                viewer.classList.remove('hidden');
+                editBtn.classList.remove('hidden');
+            }
+        }
+
+        function communityFormat(cmd) {
+            if (cmd === 'bold') document.execCommand('bold', false, null);
+            if (cmd === 'italic') document.execCommand('italic', false, null);
+        }
+        function communityInsertBlock(tag) {
+            const selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) {
+                const editor = document.getElementById('community-note-editor');
+                editor.insertAdjacentHTML('beforeend', `<${tag}>Heading</${tag}><br/>`);
+                return;
+            }
+            const range = selection.getRangeAt(0);
+            const content = range.extractContents();
+            const container = document.createElement(tag);
+            container.appendChild(content);
+            range.insertNode(container);
+            range.collapse(false);
+        }
+        function communitySetFontSize(size) {
+            if (!size) return;
+            const selection = window.getSelection();
+            if (!selection || selection.isCollapsed) return;
+            const range = selection.getRangeAt(0);
+            const span = document.createElement('span');
+            span.style.fontSize = size;
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+        function communityInsertDropdown() {
+            const editor = document.getElementById('community-note-editor');
+            const dropdownHtml = `<details><summary>New Section</summary><div style="padding: .5rem 0;">Detailed content here...</div></details><br/>`;
+            const selection = window.getSelection();
+            if (selection && selection.rangeCount) {
+                const range = selection.getRangeAt(0);
+                const node = document.createElement('div');
+                node.innerHTML = dropdownHtml;
+                const frag = document.createDocumentFragment();
+                while (node.firstChild) frag.appendChild(node.firstChild);
+                range.insertNode(frag);
+            } else {
+                editor.insertAdjacentHTML('beforeend', dropdownHtml);
+            }
+        }
+        function saveCommunityNoteEdits() {
+            if (!window.currentNote) return;
+            // permission check
+            if (!((window.currentUser && window.currentUser.id === window.currentNote.authorId) || window.developerModeEnabled)) {
+                showNotification('You are not allowed to edit this note', 'error');
+                return;
+            }
+            const html = document.getElementById('community-note-editor').innerHTML;
+            window.currentNote.content = html;
+            const idx = window.appData.communityNotes.findIndex(n => n.id === window.currentNote.id);
+            if (idx !== -1) window.appData.communityNotes[idx] = window.currentNote;
+            saveData();
+            toggleCommunityEditor(false);
+            // re-render content
+            document.getElementById('view-note-content').innerHTML = html;
+            showNotification('Community note saved', 'success');
+            trackEvent('community_note_edited', { noteId: window.currentNote.id });
             renderCommunityPage();
         }
 
@@ -1143,11 +1295,12 @@
                 .replace(/^## (.*$)/gm, '<h2>$1</h2>')
                 .replace(/^### (.*$)/gm, '<h3>$1</h3>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/^- (.*$)/gm, '<li>$1</li>')
                 .replace(/\n/g, '<br>');
             html = html.replace(/(<li>.*<\/li>)(<br>)*(?=<li>)/g, '$1');
             html = html.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
-            // Convert simple details blocks inserted by user as markdown-ish (optional)
+            // Keep details tags if user used them
             html = html.replace(/<details>/g, '<details>').replace(/<\/details>/g, '</details>');
             return html;
         }
@@ -1173,6 +1326,10 @@
             return String(str).replace(/[&<>"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
         }
         function escapeAttr(str) { return escapeHtml(str).replace(/"/g, '&quot;'); }
+
+        function containsHTML(str) {
+            return /<[^>]+>/.test(str);
+        }
 
         // Helper: renderNoteView placeholder in case other code expects it
         function renderNoteView() { /* nothing additional required; viewNote handles rendering */ }
