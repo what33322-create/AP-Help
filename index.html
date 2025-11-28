@@ -844,52 +844,20 @@
                 <h1 id="course-detail-title" class="mb-4"></h1>
 
                 <!-- Notes Section with Dropdowns -->
-<div class="section">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2 class="section-title" style="margin-bottom: 0;">
-            <i class="fas fa-book"></i>
-            Course Notes
-        </h2>
-        <button id="edit-notes-btn" class="btn btn-outline hidden" onclick="toggleNotesEditor()">
-            <i class="fas fa-edit"></i>
-            Edit Notes
-        </button>
-    </div>
-    <div id="notes-view" class="notes-content">
-        <!-- Rendered notes will appear here -->
-    </div>
-   <div id="notes-edit" class="hidden">
-    <div style="background: white; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.5rem 0.5rem 0 0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <button class="btn btn-outline" onclick="insertMarkdown('# ', '')" title="Heading 1">
-            <i class="fas fa-heading"></i> H1
-        </button>
-        <button class="btn btn-outline" onclick="insertMarkdown('## ', '')" title="Heading 2">
-            <i class="fas fa-heading"></i> H2
-        </button>
-        <button class="btn btn-outline" onclick="insertMarkdown('### ', '')" title="Heading 3">
-            <i class="fas fa-heading"></i> H3
-        </button>
-        <button class="btn btn-outline" onclick="insertMarkdown('**', '**')" title="Bold">
-            <i class="fas fa-bold"></i>
-        </button>
-        <button class="btn btn-outline" onclick="insertMarkdown('- ', '')" title="Bullet Point">
-            <i class="fas fa-list-ul"></i>
-        </button>
-        <button class="btn btn-outline" onclick="insertDropdown()" title="Add Dropdown">
-            <i class="fas fa-caret-square-down"></i> Dropdown
-        </button>
-    </div>
-    <textarea id="notes-textarea" class="form-textarea" style="min-height: 400px; border-radius: 0 0 0.5rem 0.5rem;"></textarea>
-    <div class="mt-4">
-        <button class="btn btn-primary" onclick="saveNotesEdit()">
-            <i class="fas fa-save"></i>
-            Save Changes
-        </button>
-        <button class="btn btn-outline" onclick="cancelNotesEdit()">
-            Cancel
-        </button>
-    </div>
-</div>
+                <div class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-book"></i>
+                        Course Notes
+                    </h2>
+                    <div id="notes-dropdowns">
+                        <!-- Dropdown sections will be populated by JavaScript -->
+                    </div>
+                    <button class="btn btn-outline mt-4" onclick="addNewDropdownSection()">
+                        <i class="fas fa-plus"></i>
+                        Add New Section
+                    </button>
+                </div>
+
                 <!-- Links Section -->
                 <div class="section">
                     <h2 class="section-title">
@@ -1432,89 +1400,22 @@ More detailed content...
             showNotification('Exited developer mode', 'info');
         }
 
-       // Course Detail
-function renderCourseDetail() {
-    if (!window.currentCourse) return;
-    
-    document.getElementById('course-detail-title').textContent = window.currentCourse.title;
-    
-    // Render notes
-    const notesView = document.getElementById('notes-view');
-    notesView.innerHTML = parseMarkdown(window.currentCourse.notes);
-    
-    // Show/hide edit button based on dev mode
-    const editBtn = document.getElementById('edit-notes-btn');
-    if (window.developerModeEnabled) {
-        editBtn.classList.remove('hidden');
-    } else {
-        editBtn.classList.add('hidden');
-    }
-    
-    // Render links
-    renderLinks();
-    
-    // Initialize chat
-    initializeChat();
-}
-
-function toggleNotesEditor() {
-    const notesView = document.getElementById('notes-view');
-    const notesEdit = document.getElementById('notes-edit');
-    const notesTextarea = document.getElementById('notes-textarea');
-    const editBtn = document.getElementById('edit-notes-btn');
-    
-    if (notesEdit.classList.contains('hidden')) {
-        // Switch to edit mode
-        notesTextarea.value = window.currentCourse.notes;
-        notesView.classList.add('hidden');
-        notesEdit.classList.remove('hidden');
-        editBtn.classList.add('hidden');
-    }
-}
-
-function saveNotesEdit() {
-    const notesTextarea = document.getElementById('notes-textarea');
-    const newNotes = notesTextarea.value.trim();
-    
-    if (!newNotes) {
-        showNotification('Notes cannot be empty', 'error');
-        return;
-    }
-    
-    // Update the current course notes
-    window.currentCourse.notes = newNotes;
-    
-    // Update the course in the main data
-    const courseIndex = window.appData.courses.findIndex(c => c.id === window.currentCourse.id);
-    if (courseIndex !== -1) {
-        window.appData.courses[courseIndex] = window.currentCourse;
-    }
-    
-    saveData();
-    
-    // Switch back to view mode
-    cancelNotesEdit();
-    
-    // Re-render the notes
-    const notesView = document.getElementById('notes-view');
-    notesView.innerHTML = parseMarkdown(window.currentCourse.notes);
-    
-    showNotification('Notes updated successfully', 'success');
-    trackEvent('notes_edited', { courseId: window.currentCourse.id });
-}
-
-function cancelNotesEdit() {
-    const notesView = document.getElementById('notes-view');
-    const notesEdit = document.getElementById('notes-edit');
-    const editBtn = document.getElementById('edit-notes-btn');
-    
-    notesView.classList.remove('hidden');
-    notesEdit.classList.add('hidden');
-    
-    if (window.developerModeEnabled) {
-        editBtn.classList.remove('hidden');
-    }
-}
+        // Course Detail
+        function renderCourseDetail() {
+            if (!window.currentCourse) return;
+            
+            document.getElementById('course-detail-title').textContent = window.currentCourse.title;
+            
+            // Render notes
+            const notesContent = document.getElementById('notes-dropdowns');
+            notesContent.innerHTML = parseMarkdown(window.currentCourse.notes);
+            
+            // Render links
+            renderLinks();
+            
+            // Initialize chat
+            initializeChat();
+        }
 
         // Links Section
         function renderLinks() {
@@ -1828,73 +1729,55 @@ function cancelNotesEdit() {
         }
 
         function viewNote(noteId) {
-    const note = window.appData.communityNotes.find(n => n.id === noteId);
-    if (!note) return;
-    
-    window.currentNote = note;
-    
-    // Find the course name
-    const course = window.appData.courses.find(c => c.id === note.courseId);
-    const courseName = course ? course.title : 'Unknown Course';
-    
-    document.getElementById('view-note-title').textContent = note.title;
-    document.getElementById('view-note-meta').textContent = 
-        `${courseName} • by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
-    
-    // Display rating
-    const avgRating = note.averageRating || 0;
-    const ratingCount = note.ratings ? note.ratings.length : 0;
-    const ratingStars = generateRatingStars(avgRating);
-    document.getElementById('view-rating-stars').innerHTML = ratingStars;
-    document.getElementById('view-rating-text').textContent = 
-        `${avgRating.toFixed(1)} (${ratingCount} rating${ratingCount !== 1 ? 's' : ''})`;
-    
-    // Show/hide user rating section
-    const userRatingSection = document.getElementById('user-rating-section');
-    if (window.currentUser && window.currentUser.id !== note.authorId) {
-        userRatingSection.classList.remove('hidden');
-        
-        // Check if user has already rated this note
-        if (note.ratings) {
-            const userExistingRating = note.ratings.find(r => r.userId === window.currentUser.id);
-            if (userExistingRating) {
-                setUserRating(userExistingRating.rating);
-            } else {
+            const note = window.appData.communityNotes.find(n => n.id === noteId);
+            if (!note) return;
+            
+            window.currentNote = note;
+            
+            document.getElementById('view-note-title').textContent = note.title;
+            document.getElementById('view-note-meta').textContent = 
+                `by ${note.author} • ${new Date(note.createdAt).toLocaleDateString()}`;
+            
+            // Display rating
+            const ratingStars = generateRatingStars(note.averageRating || 0);
+            document.getElementById('view-rating-stars').innerHTML = ratingStars;
+            document.getElementById('view-rating-text').textContent = 
+                `${note.averageRating ? note.averageRating.toFixed(1) : '0'} (${note.ratings ? note.ratings.length : 0} ratings)`;
+            
+            // Show/hide user rating section
+            const userRatingSection = document.getElementById('user-rating-section');
+            if (window.currentUser && window.currentUser.id !== note.authorId) {
+                userRatingSection.classList.remove('hidden');
                 resetUserRating();
+            } else {
+                userRatingSection.classList.add('hidden');
             }
-        } else {
-            resetUserRating();
+            
+            // Parse and display content
+            document.getElementById('view-note-content').innerHTML = parseMarkdown(note.content);
+            
+            showPage('note-view');
         }
-    } else {
-        userRatingSection.classList.add('hidden');
-    }
-    
-    // Parse and display content
-    document.getElementById('view-note-content').innerHTML = parseMarkdown(note.content);
-    
-    showPage('note-view');
-}
 
         function resetUserRating() {
-    window.userRating = 0;
-    const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-    stars.forEach((star) => {
-        star.classList.remove('active');
-    });
-}
-
-function setUserRating(rating) {
-    window.userRating = rating;
-    const stars = document.querySelectorAll('#user-rating-stars .rating-star');
-    stars.forEach((star) => {
-        const starRating = parseInt(star.getAttribute('data-rating'));
-        if (starRating <= rating) {
-            star.classList.add('active');
-        } else {
-            star.classList.remove('active');
+            window.userRating = 0;
+            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
+            stars.forEach((star, index) => {
+                star.classList.remove('active');
+            });
         }
-    });
-}
+
+        function setUserRating(rating) {
+            window.userRating = rating;
+            const stars = document.querySelectorAll('#user-rating-stars .rating-star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
 
         function submitRating() {
             if (!window.currentUser || !window.currentNote || window.userRating === 0) {
